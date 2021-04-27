@@ -1,0 +1,160 @@
+body {
+  background-color: #f6f6f6;
+  font-family: "Rubik", sans-serif;
+}
+
+section.auth .card {
+  background-color: #ffffff;
+  box-shadow: 0px 20px 20px rgba(126, 152, 223, 0.05);
+  border-radius: 30px;
+  width: 500px;
+}
+
+section.auth .card.forgot {
+  height: 529px;
+}
+
+section.auth .card h1 {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -0.165px;
+  color: #7e98df;
+}
+
+section.auth .card p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #232323;
+}
+
+section.auth .card form .password {
+  position: relative;
+}
+
+section.auth .card form .password img.eye-img {
+  position: absolute;
+  right: 0;
+  bottom: 7px;
+  cursor: pointer;
+}
+
+section.auth .card form label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #848484;
+  opacity: 0.75;
+  transform: translateY(10px);
+}
+
+section.auth .card form input.form-control {
+  border-top: inherit;
+  border-right: inherit;
+  border-left: inherit;
+  border-radius: inherit;
+  border-bottom: 1px solid #232323;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #232323;
+  padding-left: 0;
+}
+
+section.auth .card form input.form-control::placeholder {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #232323;
+}
+
+section.auth .card a {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7e98df;
+  cursor: pointer;
+  transition: 0.5 ease;
+  text-decoration: none;
+}
+
+section.auth .card a:hover {
+  opacity: 0.6;
+}
+
+section.auth .card .btn-auth {
+  height: 60px;
+  background-color: #7e98df;
+  border-radius: 70px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #ffffff;
+  transition: 0.5 ease;
+}
+
+section.auth .card .btn-auth:hover {
+  background-color: #ffffff;
+  border: 1px solid #7e98df;
+  color: #7e98df;
+}
+
+section.auth .card hr {
+  border: 1px solid #848484;
+}
+
+section.auth .card p.with {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #848484;
+  transform: translateY(6px);
+}
+
+section.auth .card .btn-google {
+  height: 60px;
+  background: #ffffff;
+  border: 1px solid #7e98df;
+  box-sizing: border-box;
+  border-radius: 70px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7e98df;
+  transition: 0.5 ease;
+}
+
+section.auth .card p.account {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #313131;
+}
+
+section.auth .card p.account a {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #7e98df;
+  text-decoration: none;
+  transition: 0.5 ease;
+}
+
+section.auth .card p.account a:hover {
+  opacity: 0.6;
+}
+
+section.auth .card img.back {
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+section.auth .card h1.register,
+section.auth .card h1.forgot {
+  transform: translateY(-22px);
+}
