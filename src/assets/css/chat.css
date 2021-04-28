@@ -1,0 +1,242 @@
+section.chat {
+  background-color: #ffffff;
+  display: flex;
+}
+
+section.chat h1 {
+  font-weight: 500;
+  font-size: 29px;
+  line-height: 34px;
+  letter-spacing: -0.165px;
+  color: #7e98df;
+}
+
+section.chat button {
+  border: inherit;
+  background-color: transparent;
+}
+
+section.chat .search input.form-control {
+  width: 240px;
+  height: 60px;
+  border-radius: 15px;
+  padding-left: 50px;
+  background-color: #fafafa;
+  border: inherit;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.165px;
+  color: #848484;
+  background-image: url(../img/search.png);
+  background-repeat: no-repeat;
+  background-size: 19px;
+  background-position-x: 20px;
+  background-position-y: center;
+}
+
+section.chat .search input.form-control::placeholder {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.165px;
+  color: #848484;
+}
+
+section.chat .menu .btn-menu {
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .menu .btn-menu.active {
+  background-color: #7e98df;
+  border-radius: 20px;
+  color: #ffffff;
+  padding: 13px 18px;
+}
+
+section.chat .user {
+  cursor: pointer;
+}
+
+section.chat .user .profile .image {
+  position: relative;
+}
+
+section.chat .user .profile .image img {
+  border-radius: 20px;
+}
+
+section.chat .user .profile .image img.online {
+  position: absolute;
+  bottom: 0;
+  right: -5px;
+}
+
+section.chat .user .profile .info span.name {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .user .profile .info span.name img {
+  transform: translateY(-2px);
+}
+
+section.chat .user .profile .info span.message {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: -0.165px;
+  color: #848484;
+}
+
+section.chat .user .profile .info span.message.active {
+  color: #7e98df;
+}
+
+section.chat .user .time span {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: -0.165px;
+  color: #848484;
+}
+
+section.chat .user .time div.notif {
+  background-color: #7e98df;
+  border-radius: 30px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  letter-spacing: -0.165px;
+  color: #ffffff;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+section.chat h2 {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  color: #848484;
+}
+
+section.chat .create-channel {
+  width: 218px;
+  height: 50px;
+  border-radius: 20px;
+  background-color: #7e98df;
+}
+
+section.chat .header {
+  position: relative;
+}
+
+section.chat .header .detail-menu {
+  width: 250px;
+  position: absolute;
+  box-sizing: border-box;
+  background-color: #7e98df;
+  border-radius: 35px 10px 35px 35px;
+  top: 42px;
+  right: 10px;
+  z-index: 1000;
+}
+
+section.chat .header .detail-menu a {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.165px;
+  color: #ffffff;
+  transition: 0.5 ease;
+}
+
+section.chat .header .detail-menu a:hover {
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+section.chat .profile-menu {
+  height: 120px;
+  background-color: #ffffff;
+}
+
+section.chat .profile-menu img {
+  border-radius: 20px;
+}
+
+section.chat .profile-menu span.name {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .profile-menu span.status {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  letter-spacing: -0.165px;
+  color: #7e98df;
+}
+
+section.chat .left {
+  border-right: 1px solid #e5e5e5;
+}
+
+section.chat .right {
+  background-color: #fafafa;
+}
+
+section.chat .right .message {
+  height: 120px;
+  background-color: #ffffff;
+}
+
+section.chat .right .message .input {
+  position: relative;
+}
+
+section.chat .right .message .input .img-container {
+  width: 106px;
+  position: absolute;
+  top: 18px;
+  right: 30px;
+}
+
+section.chat .right .message .input .img-container img {
+  cursor: pointer;
+}
+
+section.chat .right .message .input input.form-control {
+  width: 100%;
+  height: 60px;
+  background-color: #fafafa;
+  border-radius: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.165px;
+  color: #848484;
+}
+
+section.chat .right .message .input input.form-control::placeholder {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.165px;
+  color: #848484;
+}
