@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { signUp, verify } from "../configs/redux/actions/user";
 import Swal from "sweetalert2";
 
@@ -27,17 +29,42 @@ export default function Register() {
   const { loading } = useSelector((state) => state.user);
 
   const [type, setType] = useState("password");
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
 
-  const handleFormChange = (event) => {
-    const dataNew = { ...data };
-    dataNew[event.target.name] = event.target.value;
-    setData(dataNew);
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().min(3, "Mininum 3 characters").required("Required!"),
+      email: Yup.string().email("Invalid email format").required("Required!"),
+      password: Yup.string()
+        .min(8, "Minimum 8 characters")
+        .required("Required!"),
+    }),
+    onSubmit: (values) => {
+      dispatch(signUp(values))
+        .then((res) => {
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "Error!",
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        });
+    },
+  });
 
   const handleClickBack = () => {
     history.push("/");
@@ -49,34 +76,6 @@ export default function Register() {
     } else {
       setType("text");
     }
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(signUp(data))
-      .then((res) => {
-        setData({
-          name: "",
-          email: "",
-          password: "",
-        });
-        Swal.fire({
-          title: "Success!",
-          text: res,
-          icon: "success",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error!",
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      });
   };
 
   useEffect(() => {
@@ -120,35 +119,48 @@ export default function Register() {
               />
               <h1 className="text-center register">Register</h1>
               <p className="mt-1 mb-4">Let’s create your account!</p>
-              <form>
-                <div className="form-group">
+              <form onSubmit={formik.handleSubmit}>
+                <div className={`form-group ${formik.errors.name && "mb-0"}`}>
                   <label htmlFor="name">Name</label>
                   <Input
                     type="text"
                     name="name"
                     placeholder="Enter your name"
-                    value={data.name}
-                    onChange={handleFormChange}
+                    className={`${formik.errors.name && "error"}`}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
                   />
                 </div>
-                <div className="form-group">
+                {formik.errors.name && formik.touched.name && (
+                  <small className="error">{formik.errors.name}</small>
+                )}
+                <div className={`form-group ${formik.errors.email && "mb-0"}`}>
                   <label htmlFor="email">Email</label>
                   <Input
                     type="text"
                     name="email"
                     placeholder="Enter your e-mail"
-                    value={data.email}
-                    onChange={handleFormChange}
+                    className={`${formik.errors.email && "error"}`}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
                   />
                 </div>
-                <div className="form-group password">
+                {formik.errors.email && formik.touched.email && (
+                  <small className="error">{formik.errors.email}</small>
+                )}
+                <div
+                  className={`form-group password ${
+                    formik.errors.password && "mb-0"
+                  }`}
+                >
                   <label htmlFor="password">Password</label>
                   <Input
                     type={type}
                     name="password"
                     placeholder="Enter your password"
-                    value={data.password}
-                    onChange={handleFormChange}
+                    className={`${formik.errors.password && "error"}`}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
                   />
                   <img
                     src={Eye}
@@ -159,14 +171,13 @@ export default function Register() {
                     onClick={handleToggle}
                   />
                 </div>
+                {formik.errors.password && formik.touched.password && (
+                  <small className="error">{formik.errors.password}</small>
+                )}
+                <button type="submit" className="btn btn-auth btn-block mt-4">
+                  {!loading ? "Register" : "Please wait..."}
+                </button>
               </form>
-              <button
-                type="button"
-                className="btn btn-auth mt-4"
-                onClick={handleSubmit}
-              >
-                {!loading ? "Register" : "Please wait..."}
-              </button>
               <Row className="mt-4">
                 <Col className="col-4">
                   <hr />

@@ -13,6 +13,7 @@ export default function Input(props) {
       placeholder={props.placeholder}
       value={props.value}
       onChange={props.onChange}
+      autoComplete="off"
     />
   );
 }

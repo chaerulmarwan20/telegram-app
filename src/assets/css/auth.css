@@ -66,11 +66,20 @@ section.auth .card form input.form-control {
   padding-left: 0;
 }
 
+section.auth .card form input.form-control.error {
+  border-bottom: 1px solid #ff0000;
+}
+
 section.auth .card form input.form-control::placeholder {
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
   color: #232323;
+}
+
+section.auth .card form small.error {
+  margin-top: -20px;
+  color: #ff0000;
 }
 
 section.auth .card a {
