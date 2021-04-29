@@ -16,7 +16,11 @@ section.chat button {
   background-color: transparent;
 }
 
-section.chat .search input.form-control {
+section.chat .search .input-search {
+  position: relative;
+}
+
+section.chat .search .input-search input.form-control {
   width: 240px;
   height: 60px;
   border-radius: 15px;
@@ -28,11 +32,12 @@ section.chat .search input.form-control {
   line-height: 19px;
   letter-spacing: -0.165px;
   color: #848484;
-  background-image: url(../img/search.png);
-  background-repeat: no-repeat;
-  background-size: 19px;
-  background-position-x: 20px;
-  background-position-y: center;
+}
+
+section.chat .search .input-search img {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
 }
 
 section.chat .search input.form-control::placeholder {
@@ -169,6 +174,30 @@ section.chat .header .detail-menu a:hover {
 section.chat .profile-menu {
   height: 120px;
   background-color: #ffffff;
+  position: relative;
+}
+
+section.chat .profile-menu .chat-menu {
+  position: absolute;
+  background-color: #7e98df;
+  border-radius: 35px 10px 35px 35px;
+  top: 70px;
+  right: 60px;
+  z-index: 999;
+}
+
+section.chat .profile-menu .chat-menu a {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 156%;
+  letter-spacing: -0.165px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: 0.5 ease;
+}
+
+section.chat .profile-menu .chat-menu a:hover {
+  opacity: 0.6;
 }
 
 section.chat .profile-menu img {
@@ -239,4 +268,167 @@ section.chat .right .message .input input.form-control::placeholder {
   line-height: 19px;
   letter-spacing: -0.165px;
   color: #848484;
+}
+
+section.chat .right .chating .body {
+  position: relative;
+}
+
+section.chat .right .chating .body p.date-send {
+  position: absolute;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 156%;
+  letter-spacing: -0.165px;
+  color: #7e98df;
+  right: 450px;
+  top: 50%;
+}
+
+section.chat .right .chating .body p.date-reply {
+  position: absolute;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 156%;
+  letter-spacing: -0.165px;
+  color: #232323;
+  right: 385px;
+  top: 50%;
+}
+
+section.chat .right .chating .body .send {
+  max-width: 280px;
+  background-color: #7e98df;
+  border-radius: 35px 35px 35px 10px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 185.17%;
+  letter-spacing: -0.165px;
+  color: #ffffff;
+}
+
+section.chat .right .chating .body .reply {
+  max-width: 280px;
+  background-color: #ffffff;
+  border-radius: 35px 10px 35px 35px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 185.17%;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .profile h1 {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #7e98df;
+}
+
+section.chat .profile img {
+  cursor: pointer;
+}
+
+section.chat .profile .image p {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .profile .image p.username {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 1.335px;
+  color: #848484;
+  transform: translateY(-10px);
+}
+
+section.chat .profile .account,
+section.chat .profile .info-account {
+  border-bottom: 2px solid #f6f6f6;
+}
+
+section.chat .profile .account p {
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 23px;
+  color: #232323;
+}
+
+section.chat .profile .account span {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 1.335px;
+  color: #232323;
+}
+
+section.chat .profile .account a {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.17px;
+  color: #7e98df;
+  transition: 0.5 ease;
+  text-decoration: none;
+}
+
+section.chat .profile .account a:hover {
+  opacity: 0.6;
+}
+
+section.chat .profile .info-account p {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #232323;
+}
+
+section.chat .profile .info-account span {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.17px;
+  color: #848484;
+  transform: translateY(-10px);
+}
+
+section.chat .profile .detail p {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 181%;
+  color: #232323;
+}
+
+section.chat .profile .detail span {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.17px;
+  color: #848484;
+  transform: translateY(-5px);
+}
+
+section.chat .profile .detail p.settings {
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 23px;
+  color: #232323;
+}
+
+section.chat .profile .detail a {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+  color: #232323;
+  text-decoration: none;
+  transition: 0.5 ease;
+  margin-top: 30px;
+}
+
+section.chat .profile .detail a:hover {
+  opacity: 0.6;
 }
