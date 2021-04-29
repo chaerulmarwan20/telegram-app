@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../configs/redux/actions/user";
 import Swal from "sweetalert2";
 
 import Container from "../components/module/Container";
@@ -12,9 +13,9 @@ import Eye from "../assets/img/eye.png";
 import Google from "../assets/img/google.png";
 
 export default function Login() {
-  const Url = process.env.REACT_APP_API_URL;
-
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const [type, setType] = useState("password");
   const [data, setData] = useState({
@@ -38,17 +39,15 @@ export default function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios
-      .post(`${Url}/users/auth/login`, data)
+    dispatch(login(data))
       .then((res) => {
         setData({
           email: "",
           password: "",
         });
-        localStorage.setItem("token", res.data.data.token);
         Swal.fire({
           title: "Success!",
-          text: res.data.message,
+          text: res,
           icon: "success",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",
@@ -63,7 +62,7 @@ export default function Login() {
       .catch((err) => {
         Swal.fire({
           title: "Error!",
-          text: err.response.data.message,
+          text: err.message,
           icon: "error",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",

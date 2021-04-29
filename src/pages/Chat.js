@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { findUser, update } from "../configs/redux/actions/user";
 
 import Col from "../components/module/Col";
 
@@ -40,12 +43,46 @@ import SearchWhite from "../assets/img/search-white.png";
 import Trash from "../assets/img/trash.png";
 
 export default function Chat() {
+  const UrlImage = process.env.REACT_APP_API_IMG;
+
+  const dispatch = useDispatch();
+
+  const imageRef = useRef(null);
+
+  const { user } = useSelector((state) => state.user);
+
+  const [data, setData] = useState({
+    username: "",
+    name: "",
+    phoneNumber: "",
+    bio: "",
+  });
+  const [dataImage, setDataImage] = useState({
+    image: user.image,
+  });
+  const [imgUrl, setImgUrl] = useState("");
+  const [status, setStatus] = useState(false);
   const [showChannel, setShowChannel] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showChatMenu, setShowChatMenu] = useState(false);
   const [category, setCategory] = useState("Important");
+
+  const handleFormChange = (event) => {
+    const dataNew = { ...data };
+    dataNew[event.target.name] = event.target.value;
+    setData(dataNew);
+  };
+
+  const handleChangeImage = (event) => {
+    const imgFiles = event.target.files[0];
+    setImgUrl(URL.createObjectURL(event.target.files[0]));
+    setStatus(true);
+    setDataImage({
+      image: imgFiles,
+    });
+  };
 
   const handleClickMenu = () => {
     setShowDetail(!showDetail);
@@ -63,17 +100,78 @@ export default function Chat() {
     setShowChat(!showChat);
   };
 
-  // const handleClickProfile = () => {
-  //   setShowProfile(!showProfile);
-  // };
+  const handleClickProfile = () => {
+    setShowProfile(!showProfile);
+  };
 
   const handleClickChatMenu = () => {
     setShowChatMenu(!showChatMenu);
   };
 
   const handleClickBack = () => {
+    setShowDetail(false);
     setShowProfile(false);
   };
+
+  const handleSaveChanges = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("username", data.username);
+    formData.append("name", data.name);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("bio", data.bio);
+    if (status) {
+      formData.append("image", dataImage.image);
+    }
+    dispatch(update(formData))
+      .then((res) => {
+        dispatch(findUser());
+        Swal.fire({
+          title: "Success!",
+          text: res,
+          icon: "success",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#7E98DF",
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#7E98DF",
+        });
+      });
+  };
+
+  useEffect(() => {
+    dispatch(findUser())
+      .then((res) => {
+        setImgUrl(`${UrlImage}${res.image}`);
+        setData({
+          username: res.username,
+          name: res.name,
+          phoneNumber: res.phoneNumber,
+          bio: res.bio,
+        });
+      })
+      .catch((err) => {
+        if (
+          err.message !== "Token is expired" &&
+          err.message !== "Token is not active" &&
+          err.message !== "Invalid signature"
+        ) {
+          Swal.fire({
+            title: "Error!",
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        }
+      });
+  }, [dispatch, UrlImage]);
 
   return (
     <section className="chat">
@@ -105,7 +203,7 @@ export default function Chat() {
               {showDetail && (
                 <div className="detail-menu p-4">
                   <div className="d-flex align-items-center">
-                    <Link to="#">
+                    <Link to="#" onClick={() => handleClickProfile()}>
                       <img
                         src={Settings}
                         width={22}
@@ -362,39 +460,40 @@ export default function Chat() {
         )}
         {showProfile && (
           <>
-            <div className="profile d-flex flex-column">
-              <div className="d-flex w-75 justify-content-between">
-                <div>
-                  <img
-                    src={Back}
-                    width={10}
-                    alt="Back"
-                    className="mt-1"
-                    onClick={() => handleClickBack()}
-                  />
-                </div>
-                <h1 className="mr-4">@wdlam</h1>
+            <div className="profile user d-flex flex-column">
+              <div className="d-flex justify-content-start">
+                <img
+                  src={Back}
+                  width={10}
+                  alt="Back"
+                  className="mt-1 back"
+                  onClick={() => handleClickBack()}
+                />
               </div>
               <div className="image text-center mt-4">
-                <img src={Gloria} width={82} alt="Gloria" />
-                <p className="mt-3">Gloria Mckinney</p>
-                <p className="username">@wdlam</p>
+                <h1>{user.username}</h1>
+                <img src={`${UrlImage}${user.image}`} width={82} alt="User" />
+                <p className="mt-3">{user.name}</p>
+                <p className="username">{user.username}</p>
               </div>
               <div className="account d-flex flex-column pb-4">
                 <p>Account</p>
-                <span>+375(29)9638433</span>
-                <Link className="mt-1" to="#">
-                  Tap to change phone number
+                <span>{user.phoneNumber}</span>
+                <Link
+                  className="mt-1"
+                  to="#"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                >
+                  Tap to change your data
                 </Link>
               </div>
               <div className="info-account d-flex flex-column pb-3 mt-4">
-                <p>@wdlam</p>
+                <p>{user.username}</p>
                 <span>Username</span>
               </div>
               <div className="detail d-flex flex-column mt-4">
-                <p>
-                  I’m Senior Frontend Developer <br /> from Microsoft
-                </p>
+                <p>{user.bio}</p>
                 <span>Bio</span>
                 <p className="settings mt-3">Settings</p>
                 <Link to="#" className="mt-2">
@@ -566,6 +665,109 @@ export default function Chat() {
           </>
         )}
       </Col>
+      <div
+        className="modal fade"
+        id="exampleModal"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Change your data
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="text-center mb-3 img-wrapper">
+                  <img
+                    src={imgUrl}
+                    width={82}
+                    alt="User"
+                    className="img-user"
+                  />
+                  <input
+                    type="file"
+                    name="image"
+                    className="file-input"
+                    ref={imageRef}
+                    onChange={(event) => handleChangeImage(event)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="username">Username</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    id="username"
+                    placeholder="Write your username"
+                    value={`${data.username !== "none" ? data.username : ""}`}
+                    onChange={handleFormChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    id="name"
+                    placeholder="Write your name"
+                    value={data.name}
+                    onChange={handleFormChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="phoneNumber"
+                    id="phoneNumber"
+                    placeholder="Write your phone number"
+                    value={`${
+                      data.phoneNumber !== "none" ? data.phoneNumber : ""
+                    }`}
+                    onChange={handleFormChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="bio">Bio</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="bio"
+                    id="bio"
+                    placeholder="Write your bio"
+                    value={`${data.bio !== "none" ? data.bio : ""}`}
+                    onChange={handleFormChange}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-changes"
+                data-dismiss="modal"
+                onClick={handleSaveChanges}
+              >
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

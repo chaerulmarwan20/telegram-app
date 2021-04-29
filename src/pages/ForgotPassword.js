@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { activate, reset } from "../configs/redux/actions/user";
 import Swal from "sweetalert2";
 
 import Container from "../components/module/Container";
@@ -12,8 +13,6 @@ import Eye from "../assets/img/eye.png";
 import Back from "../assets/img/back.png";
 
 export default function ForgotPassword() {
-  const Url = process.env.REACT_APP_API_URL;
-
   const useQuery = () => new URLSearchParams(useLocation().search);
 
   const query = useQuery();
@@ -23,7 +22,10 @@ export default function ForgotPassword() {
 
   const history = useHistory();
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const { loading } = useSelector((state) => state.user);
+
   const [type, setType] = useState("password");
   const [typeConfirm, setTypeConfirm] = useState("password");
   const [showPassword, setShowPassword] = useState(false);
@@ -69,27 +71,23 @@ export default function ForgotPassword() {
 
   const handleSend = (event) => {
     event.preventDefault();
-    setLoading(true);
-    axios
-      .post(`${Url}/users/auth/forgot-password`, dataEmail)
+    dispatch(activate(dataEmail))
       .then((res) => {
         setDataEmail({
           email: "",
         });
-        setLoading(false);
         Swal.fire({
           title: "Success!",
-          text: res.data.message,
+          text: res,
           icon: "success",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",
         });
       })
       .catch((err) => {
-        setLoading(false);
         Swal.fire({
           title: "Error!",
-          text: err.response.data.message,
+          text: err.message,
           icon: "error",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",
@@ -99,11 +97,7 @@ export default function ForgotPassword() {
 
   const handleReset = (event) => {
     event.preventDefault();
-    axios
-      .put(
-        `${Url}/users/auth/reset-password/?email=${email}&token=${token}`,
-        data
-      )
+    dispatch(reset(email, token, data))
       .then((res) => {
         setData({
           password: "",
@@ -111,7 +105,7 @@ export default function ForgotPassword() {
         });
         Swal.fire({
           title: "Success!",
-          text: res.data.message,
+          text: res,
           icon: "success",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",
@@ -127,10 +121,9 @@ export default function ForgotPassword() {
         Swal.fire({
           title: "Error!",
           text:
-            err.response.data.message ===
-            `"confirmPassword" must be [ref:password]`
+            err.message === `"confirmPassword" must be [ref:password]`
               ? "Password do not match"
-              : err.response.data.message,
+              : err.message,
           icon: "error",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { signUp, verify } from "../configs/redux/actions/user";
 import Swal from "sweetalert2";
 
 import Container from "../components/module/Container";
@@ -13,8 +14,6 @@ import Google from "../assets/img/google.png";
 import Back from "../assets/img/back.png";
 
 export default function Register() {
-  const Url = process.env.REACT_APP_API_URL;
-
   const useQuery = () => new URLSearchParams(useLocation().search);
 
   const query = useQuery();
@@ -23,8 +22,11 @@ export default function Register() {
 
   const history = useHistory();
 
+  const dispatch = useDispatch();
+
+  const { loading } = useSelector((state) => state.user);
+
   const [type, setType] = useState("password");
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -51,29 +53,25 @@ export default function Register() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
-    axios
-      .post(`${Url}/users/`, data)
+    dispatch(signUp(data))
       .then((res) => {
         setData({
           name: "",
           email: "",
           password: "",
         });
-        setLoading(false);
         Swal.fire({
           title: "Success!",
-          text: res.data.message,
+          text: res,
           icon: "success",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",
         });
       })
       .catch((err) => {
-        setLoading(false);
         Swal.fire({
           title: "Error!",
-          text: err.response.data.message,
+          text: err.message,
           icon: "error",
           confirmButtonText: "Ok",
           confirmButtonColor: "#7E98DF",
@@ -83,12 +81,11 @@ export default function Register() {
 
   useEffect(() => {
     if (email !== null && token !== null) {
-      axios
-        .get(`${Url}/users/auth/verify/?email=${email}&token=${token}`)
+      dispatch(verify(email, token))
         .then((res) => {
           Swal.fire({
             title: "Success!",
-            text: res.data.message,
+            text: res,
             icon: "success",
             confirmButtonText: "Ok",
             confirmButtonColor: "#7E98DF",
@@ -97,14 +94,14 @@ export default function Register() {
         .catch((err) => {
           Swal.fire({
             title: "Error!",
-            text: err.response.data.message,
+            text: err.message,
             icon: "error",
             confirmButtonText: "Ok",
             confirmButtonColor: "#7E98DF",
           });
         });
     }
-  }, [Url, email, token]);
+  }, [dispatch, email, token]);
 
   return (
     <section className="auth py-5">

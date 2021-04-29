@@ -69,12 +69,33 @@ section.chat .user {
   cursor: pointer;
 }
 
+section.chat .profile .back {
+  position: relative;
+  z-index: 1000;
+  cursor: pointer;
+}
+
 section.chat .user .profile .image {
   position: relative;
 }
 
-section.chat .user .profile .image img {
+section.chat .user .profile .image img,
+section.chat .profile .image img {
   border-radius: 20px;
+}
+
+section.chat .profile.user .image {
+  transform: translateY(-30px);
+}
+
+section.chat .profile.user .image h1 {
+  transform: translateY(-18px);
+}
+
+section.chat .account,
+section.chat .info-account,
+section.chat .detail {
+  transform: translateY(-25px);
 }
 
 section.chat .user .profile .image img.online {
@@ -325,10 +346,6 @@ section.chat .profile h1 {
   color: #7e98df;
 }
 
-section.chat .profile img {
-  cursor: pointer;
-}
-
 section.chat .profile .image p {
   font-weight: 500;
   font-size: 22px;
@@ -431,4 +448,52 @@ section.chat .profile .detail a {
 
 section.chat .profile .detail a:hover {
   opacity: 0.6;
+}
+
+section.chat .btn-changes {
+  width: 150px;
+  height: 50px;
+  background-color: #7e98df;
+  border-radius: 70px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #ffffff;
+  transition: 0.5 ease;
+}
+
+section.chat .btn-changes:hover {
+  background-color: #ffffff;
+  color: #7e98df;
+  border: 1px solid #7e98df;
+}
+
+section.chat .modal-content {
+  border-radius: 20px;
+}
+
+section.chat .modal-content .modal-body input.form-control {
+  border-radius: 20px;
+  padding-left: 20px;
+}
+
+section.chat .img-user {
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+section.chat .img-wrapper {
+  position: relative;
+}
+
+section.chat .img-wrapper .file-input {
+  position: absolute;
+  width: 82px;
+  height: 82px;
+  opacity: 0;
+  left: 188px;
+  cursor: pointer;
 }
