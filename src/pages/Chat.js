@@ -15,6 +15,7 @@ import ProfileMenuComp from "../components/module/ProfileMenu";
 import Attach from "../components/module/Attach";
 import Feature from "../components/module/Feature";
 import ContactInfo from "../components/module/ContactInfo";
+import ContactInfoMobile from "../components/module/ContactInfoMobile";
 import Profile from "../components/module/Profile";
 
 import Menu from "../assets/img/menu.png";
@@ -60,6 +61,9 @@ export default function Chat() {
   const [showChatMenu, setShowChatMenu] = useState(false);
   const [showAttach, setShowAttach] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
+  const [chatMobile, setChatMobile] = useState(true);
+  const [chatingMobile, setChatingMobile] = useState(false);
+  const [infoMobile, setInfoMobile] = useState(false);
   const [category, setCategory] = useState("Important");
   const [infoCategory, setInfoCategory] = useState("Image");
 
@@ -76,6 +80,26 @@ export default function Chat() {
     setDataImage({
       image: imgFiles,
     });
+  };
+
+  const handleClickChatMobile = () => {
+    setChatingMobile(true);
+    setChatMobile(false);
+  };
+
+  const handleClickBackMobile = () => {
+    setChatingMobile(false);
+    setChatMobile(true);
+  };
+
+  const handleClickContactInfoMobile = () => {
+    setChatingMobile(false);
+    setInfoMobile(true);
+  };
+
+  const handleClickBackInfoMobile = () => {
+    setChatingMobile(true);
+    setInfoMobile(false);
   };
 
   const handleClickMenu = () => {
@@ -200,7 +224,7 @@ export default function Chat() {
           <meta charSet="utf-8" />
           <title>Telegram App - Chat</title>
         </Helmet>
-        <Col className="col-3 pl-4 pr-3 py-4 left">
+        <Col className="d-none d-lg-block col-xl-3 col-lg-4 col-12 pl-4 pr-3 py-4 left">
           {!showProfile && (
             <>
               <div className="header d-flex justify-content-between align-items-center">
@@ -213,7 +237,7 @@ export default function Chat() {
                   <DetailMenu showProfile={handleClickProfile}></DetailMenu>
                 )}
               </div>
-              <div className="search mt-4 d-flex justify-content-between align-items-center">
+              <div className="search mt-4 d-flex justify-content-center align-items-center">
                 <div className="input-search">
                   <img src={Search} width={22} alt="search" />
                   <Input
@@ -224,7 +248,7 @@ export default function Chat() {
                 </div>
                 <Button
                   type="button"
-                  className="btn"
+                  className="d-none"
                   onClick={() => handleClickPlus()}
                 >
                   <img src={Plus} width={23} alt="Plus" />
@@ -235,7 +259,7 @@ export default function Chat() {
                 changeCategory={handleClickCategory}
               ></MenuComp>
               <div
-                className="user d-flex justify-content-between align-items-center mt-4"
+                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
               >
                 <div className="profile d-flex align-items-center">
@@ -263,7 +287,7 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                className="user d-flex justify-content-between align-items-center mt-4"
+                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
               >
                 <div className="profile d-flex align-items-center">
@@ -289,7 +313,7 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                className="user d-flex justify-content-between align-items-center mt-4"
+                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
               >
                 <div className="profile d-flex align-items-center">
@@ -309,7 +333,7 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                className="user d-flex justify-content-between align-items-center mt-4"
+                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
               >
                 <div className="profile d-flex align-items-center">
@@ -342,7 +366,7 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                className="user d-flex justify-content-between align-items-center mt-4"
+                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
               >
                 <div className="profile d-flex align-items-center">
@@ -375,7 +399,7 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                className="user d-flex justify-content-between align-items-center mt-4"
+                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
               >
                 <div className="profile d-flex align-items-center">
@@ -406,10 +430,222 @@ export default function Chat() {
             </>
           )}
         </Col>
+        {chatMobile && (
+          <Col className="d-block d-lg-none col-xl-3 col-lg-4 col-12 pl-4 pr-3 py-4 left">
+            {!showProfile && (
+              <>
+                <div className="header d-flex justify-content-between align-items-center">
+                  {!showChannel && <h1>Telegram</h1>}
+                  {showChannel && <Channel></Channel>}
+                  <Button type="button" onClick={() => handleClickMenu()}>
+                    <img src={Menu} width={22} alt="Menu" />
+                  </Button>
+                  {showDetail && (
+                    <DetailMenu showProfile={handleClickProfile}></DetailMenu>
+                  )}
+                </div>
+                <div className="search mt-4 d-flex justify-content-center align-items-center">
+                  <div className="input-search">
+                    <img src={Search} width={22} alt="search" />
+                    <Input
+                      type="text"
+                      name="keyword"
+                      placeholder="Type your message..."
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    className="d-none"
+                    onClick={() => handleClickPlus()}
+                  >
+                    <img src={Plus} width={23} alt="Plus" />
+                  </Button>
+                </div>
+                <MenuComp
+                  category={category}
+                  changeCategory={handleClickCategory}
+                ></MenuComp>
+                <div
+                  className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                  onClick={() => handleClickChatMobile()}
+                >
+                  <div className="profile d-flex align-items-center">
+                    <div className="image">
+                      <img src={Theresa} width={64} alt="Theresa" />
+                    </div>
+                    <div className="info d-flex flex-column ml-3">
+                      <span className="name">
+                        Theresa Webb
+                        <img
+                          src={Union}
+                          width={16}
+                          alt="Union"
+                          className="ml-2"
+                        />
+                      </span>
+                      <span className="message active mt-2">
+                        Why did you do that?
+                      </span>
+                    </div>
+                  </div>
+                  <div className="time d-flex flex-column">
+                    <span>15:20</span>
+                    <div className="notif mt-2">2</div>
+                  </div>
+                </div>
+                <div
+                  className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                  onClick={() => handleClickChatMobile()}
+                >
+                  <div className="profile d-flex align-items-center">
+                    <div className="image">
+                      <img src={Flores} width={64} alt="Flores" />
+                      <img
+                        src={Online}
+                        width={20}
+                        alt="Online"
+                        className="online"
+                      />
+                    </div>
+                    <div className="info d-flex flex-column ml-3">
+                      <span className="name">Calvin Flores</span>
+                      <span className="message active mt-2">
+                        Hi, bro! Come to my house!
+                      </span>
+                    </div>
+                  </div>
+                  <div className="time d-flex flex-column">
+                    <span>15:13</span>
+                    <div className="notif mt-2">1</div>
+                  </div>
+                </div>
+                <div
+                  className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                  onClick={() => handleClickChatMobile()}
+                >
+                  <div className="profile d-flex align-items-center">
+                    <div className="image">
+                      <img src={Bell} width={64} alt="Bell" />
+                    </div>
+                    <div className="info d-flex flex-column ml-3">
+                      <span className="name">Gregory Bell</span>
+                      <span className="message active mt-2">
+                        Will you stop ignoring me?
+                      </span>
+                    </div>
+                  </div>
+                  <div className="time d-flex flex-column">
+                    <span>15:13</span>
+                    <div className="notif mt-2">164</div>
+                  </div>
+                </div>
+                <div
+                  className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                  onClick={() => handleClickChatMobile()}
+                >
+                  <div className="profile d-flex align-items-center">
+                    <div className="image">
+                      <img src={Henry} width={64} alt="henry" />
+                    </div>
+                    <div className="info d-flex flex-column ml-3">
+                      <span className="name">
+                        Soham Henry
+                        <img
+                          src={Union}
+                          width={16}
+                          alt="Union"
+                          className="ml-2"
+                        />
+                      </span>
+                      <span className="message mt-2">
+                        Me: Bro, just fuck off
+                      </span>
+                    </div>
+                  </div>
+                  <div className="time d-flex flex-column">
+                    <span>8:30</span>
+                    <div className="check">
+                      <img
+                        src={CheckBlue}
+                        width={20}
+                        alt="CheckBlue"
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                  onClick={() => handleClickChatMobile()}
+                >
+                  <div className="profile d-flex align-items-center">
+                    <div className="image">
+                      <img src={Mother} width={64} alt="Mother" />
+                      <img
+                        src={Online}
+                        width={20}
+                        alt="Online"
+                        className="online"
+                      />
+                    </div>
+                    <div className="info d-flex flex-column ml-3">
+                      <span className="name">Mother ❤</span>
+                      <span className="message mt-2">
+                        Me: Yes, of course come, ...
+                      </span>
+                    </div>
+                  </div>
+                  <div className="time d-flex flex-column">
+                    <span>7:20</span>
+                    <div className="check">
+                      <img
+                        src={CheckGrey}
+                        width={20}
+                        alt="CheckGrey"
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                  onClick={() => handleClickChatMobile()}
+                >
+                  <div className="profile d-flex align-items-center">
+                    <div className="image">
+                      <img src={Brother} width={64} alt="Brother" />
+                    </div>
+                    <div className="info d-flex flex-column ml-3">
+                      <span className="name">Brother</span>
+                      <span className="message mt-2">Ok. Good bay!</span>
+                    </div>
+                  </div>
+                  <div className="time d-flex flex-column">
+                    <span>Yesterday</span>
+                  </div>
+                </div>
+              </>
+            )}
+            {showProfile && (
+              <>
+                <Profile
+                  back={handleClickBack}
+                  username={user.username}
+                  image={`${UrlImage}${user.image}`}
+                  phone={user.phoneNumber}
+                  bio={user.bio}
+                  name={user.name}
+                ></Profile>
+              </>
+            )}
+          </Col>
+        )}
         <Col
           className={`${
-            !showContactInfo ? "col-9" : "col-6"
-          } d-flex flex-column px-0 py-0 right ${
+            !showContactInfo
+              ? "col-xl-9 col-lg-8 col-12"
+              : "col-xl-6 col-lg-5 col-12"
+          } d-none d-lg-flex flex-column px-0 py-0 right ${
             !showChat
               ? "justify-content-center align-items-center"
               : "justify-content-between"
@@ -436,18 +672,18 @@ export default function Chat() {
                     Hi, Gloria, how are you doing? Today, my father and I went
                     to buy a car, bought a cool car.
                   </div>
-                  <p className={`date-send ${showContactInfo && "d-none"}`}>
+                  {/* <p className={`date-send ${showContactInfo && "d-none"}`}>
                     Wed. 20:32
-                  </p>
+                  </p> */}
                 </div>
                 <div className="body d-flex align-items-start justify-content-end mt-5">
                   <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
                   <div className="ml-3">
                     <img src={Gloria} width={54} alt="Gloria" />
                   </div>
-                  <p className={`date-reply ${showContactInfo && "d-none"}`}>
+                  {/* <p className={`date-reply ${showContactInfo && "d-none"}`}>
                     Wed. 20:32
-                  </p>
+                  </p> */}
                 </div>
                 <div className="body d-flex align-items-end justify-content-start mt-5">
                   <div className="mr-3">
@@ -497,12 +733,111 @@ export default function Chat() {
             </>
           )}
         </Col>
+        {chatingMobile && (
+          <Col
+            className={`${
+              !showContactInfo
+                ? "col-xl-9 col-lg-8 col-12"
+                : "col-xl-6 col-lg-5 col-12"
+            } d-flex d-lg-none flex-column px-0 py-0 right ${
+              !showChat
+                ? "justify-content-center align-items-center"
+                : "justify-content-between"
+            }`}
+          >
+            <div className="profile-menu d-flex justify-content-between align-items-center w-100 py-4 px-5">
+              <ProfileMenuComp
+                contactInfo={handleClickContactInfoMobile}
+                back={handleClickBackMobile}
+              ></ProfileMenuComp>
+              <Button type="button" onClick={() => handleClickChatMenu()}>
+                <img src={ProfileMenu} width={20} alt="Profile Menu" />
+              </Button>
+              {showChatMenu && <ChatMenu></ChatMenu>}
+            </div>
+            <div className="chating d-flex flex-column h-100 py-4 px-5 w-100">
+              <div className="body d-flex align-items-end justify-content-start">
+                <div className="mr-3">
+                  <img src={Mother} width={54} alt="Mother" />
+                </div>
+                <div className="send py-3 px-4">
+                  Hi, Gloria, how are you doing? Today, my father and I went to
+                  buy a car, bought a cool car.
+                </div>
+                {/* <p className={`date-send ${showContactInfo && "d-none"}`}>
+                    Wed. 20:32
+                  </p> */}
+              </div>
+              <div className="body d-flex align-items-start justify-content-end mt-5">
+                <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
+                <div className="ml-3">
+                  <img src={Gloria} width={54} alt="Gloria" />
+                </div>
+                {/* <p className={`date-reply ${showContactInfo && "d-none"}`}>
+                    Wed. 20:32
+                  </p> */}
+              </div>
+              <div className="body d-flex align-items-end justify-content-start mt-5">
+                <div className="mr-3">
+                  <img src={Mother} width={54} alt="Mother" />
+                </div>
+                <div className="send py-3 px-4">Ok😉</div>
+              </div>
+              <div className="body d-flex align-items-start justify-content-end mt-5">
+                <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
+                <div className="ml-3">
+                  <img src={Gloria} width={54} alt="Gloria" />
+                </div>
+              </div>
+              <div className="body d-flex align-items-end justify-content-start mt-5">
+                <div className="mr-3">
+                  <img src={Mother} width={54} alt="Mother" />
+                </div>
+                <div className="send py-3 px-4">Will we arrive tomorrow?</div>
+              </div>
+              <div className="body d-flex align-items-start justify-content-end mt-5">
+                <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
+                <div className="ml-3">
+                  <img src={Gloria} width={54} alt="Gloria" />
+                </div>
+              </div>
+              <div className="body d-flex align-items-end justify-content-start mt-5">
+                <div className="mr-3">
+                  <img src={Mother} width={54} alt="Mother" />
+                </div>
+                <div className="send py-3 px-4">Thankyou</div>
+              </div>
+            </div>
+            <div className="message w-100 py-4 px-5 d-flex justify-content-center align-items-center">
+              {showAttach && <Attach></Attach>}
+              <div className="input w-100">
+                <Input
+                  type="text"
+                  name="message"
+                  placeholder="Type your message..."
+                />
+                <Feature
+                  attach={handleClickAttach}
+                  soon={handleClickSoon}
+                ></Feature>
+              </div>
+            </div>
+          </Col>
+        )}
         <ContactInfo
           showInfo={showContactInfo}
           info={infoCategory}
           changeInfo={handleClickInfoCategory}
           back={handleClickBackInfo}
         ></ContactInfo>
+        {infoMobile && (
+          <ContactInfoMobile
+            showInfo={true}
+            info={infoCategory}
+            changeInfo={handleClickInfoCategory}
+            back={handleClickBackInfoMobile}
+          ></ContactInfoMobile>
+        )}
         <div
           className="modal fade"
           id="exampleModal"

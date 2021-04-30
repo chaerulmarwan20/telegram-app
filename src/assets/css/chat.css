@@ -21,7 +21,7 @@ section.chat .search .input-search {
 }
 
 section.chat .search .input-search input.form-control {
-  width: 240px;
+  width: 100%;
   height: 60px;
   border-radius: 15px;
   padding-left: 50px;
@@ -283,7 +283,7 @@ section.chat .right .message .input input.form-control {
   background-color: #fafafa;
   border-radius: 15px;
   padding-left: 30px;
-  padding-right: 30px;
+  padding-right: 150px;
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
@@ -394,6 +394,7 @@ section.chat .contact-info .user-info img.back {
 }
 
 section.chat .contact-info img.img-user {
+  cursor: inherit;
   border-radius: 30px;
 }
 

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { login } from "../configs/redux/actions/user";
 import Swal from "sweetalert2";
+import { login } from "../configs/redux/actions/user";
 
 import Container from "../components/module/Container";
 import Row from "../components/module/Row";

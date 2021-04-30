@@ -122,12 +122,14 @@ section.auth .card hr {
   border: 1px solid #848484;
 }
 
-section.auth .card p.with {
+section.auth .card p.with,
+section.auth .card p.with-register {
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
   color: #848484;
   transform: translateY(6px);
+  white-space: nowrap;
 }
 
 section.auth .card .btn-google {
@@ -172,4 +174,10 @@ section.auth .card img.back {
 section.auth .card h1.register,
 section.auth .card h1.forgot {
   transform: translateY(-22px);
+}
+
+@media screen and (max-width: 991px) {
+  section.auth {
+    background-color: #ffffff;
+  }
 }

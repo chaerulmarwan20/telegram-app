@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { signUp, verify } from "../configs/redux/actions/user";
 import Swal from "sweetalert2";
+import { signUp, verify } from "../configs/redux/actions/user";
 
 import Container from "../components/module/Container";
 import Row from "../components/module/Row";
@@ -210,13 +210,13 @@ export default function Register() {
                   </Button>
                 </form>
                 <Row className="mt-4">
-                  <Col className="col-4">
+                  <Col className="col-3 col-md-4">
                     <hr />
                   </Col>
-                  <Col className="col-4">
-                    <p className="with text-center">Register with</p>
+                  <Col className="col-6 col-md-4">
+                    <p className="with-register text-center">Register with</p>
                   </Col>
-                  <Col className="col-4">
+                  <Col className="col-3 col-md-4">
                     <hr />
                   </Col>
                 </Row>

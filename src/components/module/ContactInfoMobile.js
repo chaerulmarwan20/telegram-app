@@ -19,11 +19,11 @@ import ContactInfo11 from "../../assets/img/contact11.png";
 import ContactInfo12 from "../../assets/img/contact12.png";
 import Back from "../../assets/img/back-profile.png";
 
-export default function ContactInfo(props) {
+export default function ContactInfoMobile(props) {
   return (
     <Col
       className={`${
-        props.showInfo ? "d-none d-lg-flex" : "d-none"
+        props.showInfo ? "d-flex d-lg-none" : "d-none"
       } col-12 col-lg-3 col-xl-3 pl-4 pr-3 py-4 contact-info flex-column`}
     >
       <div className="user-info d-flex justify-content-center align-items-center">
@@ -79,7 +79,7 @@ export default function ContactInfo(props) {
           Documents
         </Button>
       </div>
-      <div className="img-info-container d-flex justify-content-center flex-wrap mt-4">
+      <div className="img-info-container d-flex  d-flex justify-content-center flex-wrap mt-4">
         <img src={ContactInfo1} width={85} className="mr-2" alt="Contact1" />
         <img src={ContactInfo2} width={85} className="mr-2" alt="Contact2" />
         <img src={ContactInfo3} width={85} className="mr-2" alt="Contact3" />
