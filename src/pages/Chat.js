@@ -441,9 +441,7 @@ export default function Chat() {
                   </p>
                 </div>
                 <div className="body d-flex align-items-start justify-content-end mt-5">
-                  <div className="reply py-3 px-4">
-                    Oh! Cool Send me photo sadsadasdsad sadsadsad sadsad sadsad
-                  </div>
+                  <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
                   <div className="ml-3">
                     <img src={Gloria} width={54} alt="Gloria" />
                   </div>
