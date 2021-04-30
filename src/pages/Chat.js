@@ -1,11 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { findUser, update } from "../configs/redux/actions/user";
 
 import Col from "../components/module/Col";
+import Input from "../components/module/Input";
+import Button from "../components/module/Button";
+import Channel from "../components/module/Channel";
+import DetailMenu from "../components/module/DetailMenu";
+import MenuComp from "../components/module/Menu";
+import ChatMenu from "../components/module/ChatMenu";
+import ProfileMenuComp from "../components/module/ProfileMenu";
+import Attach from "../components/module/Attach";
+import Feature from "../components/module/Feature";
+import ContactInfo from "../components/module/ContactInfo";
+import Profile from "../components/module/Profile";
 
 import Menu from "../assets/img/menu.png";
 import Plus from "../assets/img/plus.png";
@@ -19,45 +29,9 @@ import Mother from "../assets/img/mother.png";
 import Brother from "../assets/img/brother.png";
 import CheckBlue from "../assets/img/check-blue.png";
 import CheckGrey from "../assets/img/check-grey.png";
-import Contact from "../assets/img/contact.png";
-import Secret from "../assets/img/secret.png";
-import Channel from "../assets/img/channel.png";
-import Settings from "../assets/img/settings.png";
-import ContactSingle from "../assets/img/contact-single.png";
-import Call from "../assets/img/call.png";
-import Label from "../assets/img/label.png";
-import Friends from "../assets/img/friends.png";
-import Faq from "../assets/img/faq.png";
 import ProfileMenu from "../assets/img/profile-menu.png";
-import Emoji from "../assets/img/emot.png";
-import Select from "../assets/img/select.png";
 import Gloria from "../assets/img/gloria.png";
 import Search from "../assets/img/search.png";
-import Back from "../assets/img/back-profile.png";
-import UnionBlack from "../assets/img/union-black.png";
-import Lock from "../assets/img/lock.png";
-import Chart from "../assets/img/data.png";
-import ChatSetting from "../assets/img/chat-setting.png";
-import Device from "../assets/img/device.png";
-import UnionWhite from "../assets/img/union-white.png";
-import SearchWhite from "../assets/img/search-white.png";
-import Trash from "../assets/img/trash.png";
-import Image from "../assets/img/image.png";
-import Documents from "../assets/img/documents.png";
-import Location from "../assets/img/location.png";
-import ChatBlue from "../assets/img/chat-blue.png";
-import ContactInfo1 from "../assets/img/contact1.png";
-import ContactInfo2 from "../assets/img/contact2.png";
-import ContactInfo3 from "../assets/img/contact3.png";
-import ContactInfo4 from "../assets/img/contact4.png";
-import ContactInfo5 from "../assets/img/contact5.png";
-import ContactInfo6 from "../assets/img/contact6.png";
-import ContactInfo7 from "../assets/img/contact7.png";
-import ContactInfo8 from "../assets/img/contact8.png";
-import ContactInfo9 from "../assets/img/contact9.png";
-import ContactInfo10 from "../assets/img/contact10.png";
-import ContactInfo11 from "../assets/img/contact11.png";
-import ContactInfo12 from "../assets/img/contact12.png";
 
 export default function Chat() {
   const UrlImage = process.env.REACT_APP_API_IMG;
@@ -231,142 +205,35 @@ export default function Chat() {
             <>
               <div className="header d-flex justify-content-between align-items-center">
                 {!showChannel && <h1>Telegram</h1>}
-                {showChannel && (
-                  <div className="create-channel d-flex justify-content-between align-items-center px-4">
-                    <div>
-                      <img src={Contact} width={31} alt="Contact" />
-                    </div>
-                    <div>
-                      <img src={Secret} width={14} alt="Secret" />
-                    </div>
-                    <div>
-                      <img src={Channel} width={20} alt="Channel" />
-                    </div>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => handleClickMenu()}
-                >
+                {showChannel && <Channel></Channel>}
+                <Button type="button" onClick={() => handleClickMenu()}>
                   <img src={Menu} width={22} alt="Menu" />
-                </button>
+                </Button>
                 {showDetail && (
-                  <div className="detail-menu p-4">
-                    <div className="d-flex align-items-center">
-                      <Link to="#" onClick={() => handleClickProfile()}>
-                        <img
-                          src={Settings}
-                          width={22}
-                          alt="Settings"
-                          className="mr-4"
-                        />
-                        Settings
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={ContactSingle}
-                          width={22}
-                          alt="Contacts"
-                          className="mr-4"
-                        />
-                        Contacts
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={Call}
-                          width={22}
-                          alt="Calls"
-                          className="mr-4"
-                        />
-                        Calls
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={Label}
-                          width={22}
-                          alt="Save Messages"
-                          className="mr-4"
-                        />
-                        Save Messages
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={Friends}
-                          width={22}
-                          alt="Invite Friends"
-                          className="mr-4"
-                        />
-                        Invite Friends
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={Faq}
-                          width={22}
-                          alt="Telegram FAQ"
-                          className="mr-4"
-                        />
-                        Telegram FAQ
-                      </Link>
-                    </div>
-                  </div>
+                  <DetailMenu showProfile={handleClickProfile}></DetailMenu>
                 )}
               </div>
               <div className="search mt-4 d-flex justify-content-between align-items-center">
                 <div className="input-search">
                   <img src={Search} width={22} alt="search" />
-                  <input
+                  <Input
                     type="text"
                     name="search"
                     placeholder="Type your message..."
-                    className="form-control"
                   />
                 </div>
-                <button
+                <Button
                   type="button"
                   className="btn"
                   onClick={() => handleClickPlus()}
                 >
                   <img src={Plus} width={23} alt="Plus" />
-                </button>
+                </Button>
               </div>
-              <div className="menu d-flex justify-content-between align-items-center mt-4">
-                <button
-                  type="button"
-                  className={`btn btn-menu ${category === "All" && "active"}`}
-                  onClick={() => handleClickCategory("All")}
-                >
-                  All
-                </button>
-                <button
-                  type="button"
-                  className={`btn btn-menu ${
-                    category === "Important" && "active"
-                  }`}
-                  onClick={() => handleClickCategory("Important")}
-                >
-                  Important
-                </button>
-                <button
-                  type="button"
-                  className={`btn btn-menu ${
-                    category === "Unread" && "active"
-                  }`}
-                  onClick={() => handleClickCategory("Unread")}
-                >
-                  Unread
-                </button>
-              </div>
+              <MenuComp
+                category={category}
+                changeCategory={handleClickCategory}
+              ></MenuComp>
               <div
                 className="user d-flex justify-content-between align-items-center mt-4"
                 onClick={() => handleClickChat()}
@@ -528,79 +395,14 @@ export default function Chat() {
           )}
           {showProfile && (
             <>
-              <div className="profile user-detail d-flex flex-column">
-                <div className="d-flex justify-content-start">
-                  <img
-                    src={Back}
-                    width={10}
-                    alt="Back"
-                    className="mt-1 back"
-                    onClick={() => handleClickBack()}
-                  />
-                </div>
-                <div className="image text-center mt-4">
-                  <h1>{user.username}</h1>
-                  <img src={`${UrlImage}${user.image}`} width={82} alt="User" />
-                  <p className="mt-3">{user.name}</p>
-                  <p className="username">{user.username}</p>
-                </div>
-                <div className="account d-flex flex-column pb-4">
-                  <p>Account</p>
-                  <span>{user.phoneNumber}</span>
-                  <Link
-                    className="mt-1"
-                    to="#"
-                    data-toggle="modal"
-                    data-target="#exampleModal"
-                  >
-                    Tap to change your data
-                  </Link>
-                </div>
-                <div className="info-account d-flex flex-column pb-3 mt-4">
-                  <p>{user.username}</p>
-                  <span>Username</span>
-                </div>
-                <div className="detail d-flex flex-column mt-4">
-                  <p>{user.bio}</p>
-                  <span>Bio</span>
-                  <p className="settings mt-3">Settings</p>
-                  <Link to="#" className="mt-2">
-                    <img
-                      src={UnionBlack}
-                      width={22}
-                      alt="Notification"
-                      className="mr-4"
-                    />
-                    Notification and Sounds
-                  </Link>
-                  <Link to="#">
-                    <img src={Lock} width={22} alt="Privacy" className="mr-4" />
-                    Privacy and Security
-                  </Link>
-                  <Link to="#">
-                    <img src={Chart} width={22} alt="Data" className="mr-4" />
-                    Data and Stronge
-                  </Link>
-                  <Link to="#">
-                    <img
-                      src={ChatSetting}
-                      width={22}
-                      alt="Chat"
-                      className="mr-4"
-                    />
-                    Chat settings
-                  </Link>
-                  <Link to="#">
-                    <img
-                      src={Device}
-                      width={22}
-                      alt="Device"
-                      className="mr-4"
-                    />
-                    Devices
-                  </Link>
-                </div>
-              </div>
+              <Profile
+                back={handleClickBack}
+                username={user.username}
+                image={`${UrlImage}${user.image}`}
+                phone={user.phoneNumber}
+                bio={user.bio}
+                name={user.name}
+              ></Profile>
             </>
           )}
         </Col>
@@ -617,65 +419,13 @@ export default function Chat() {
           {showChat && (
             <>
               <div className="profile-menu d-flex justify-content-between align-items-center w-100 py-4 px-5">
-                <div className="d-flex align-items-center">
-                  <img
-                    src={Mother}
-                    width={64}
-                    alt="Mother"
-                    className="user-img"
-                    onClick={() => handleClickContactInfo()}
-                  />
-                  <div
-                    className="d-flex flex-column ml-3"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleClickContactInfo()}
-                  >
-                    <span className="name">Mother ❤</span>
-                    <span className="status mt-1">Online</span>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => handleClickChatMenu()}
-                >
+                <ProfileMenuComp
+                  contactInfo={handleClickContactInfo}
+                ></ProfileMenuComp>
+                <Button type="button" onClick={() => handleClickChatMenu()}>
                   <img src={ProfileMenu} width={20} alt="Profile Menu" />
-                </button>
-                {showChatMenu && (
-                  <div className="chat-menu d-flex flex-column p-4">
-                    <Link to="#">
-                      <img src={Call} width={22} alt="Call" className="mr-4" />
-                      Call
-                    </Link>
-                    <Link to="#" className="mt-4">
-                      <img
-                        src={Trash}
-                        width={22}
-                        alt="Delete"
-                        className="mr-4"
-                      />
-                      Delete chat history
-                    </Link>
-                    <Link to="#" className="mt-4">
-                      <img
-                        src={UnionWhite}
-                        width={22}
-                        alt="Mute"
-                        className="mr-4"
-                      />
-                      Mute notification
-                    </Link>
-                    <Link to="#" className="mt-4">
-                      <img
-                        src={SearchWhite}
-                        width={22}
-                        alt="Search"
-                        className="mr-4"
-                      />
-                      Search
-                    </Link>
-                  </div>
-                )}
+                </Button>
+                {showChatMenu && <ChatMenu></ChatMenu>}
               </div>
               <div className="chating d-flex flex-column h-100 py-4 px-5">
                 <div className="body d-flex align-items-end justify-content-start">
@@ -733,175 +483,28 @@ export default function Chat() {
                 </div>
               </div>
               <div className="message w-100 py-4 px-5 d-flex justify-content-center align-items-center">
-                {showAttach && (
-                  <div className="attach p-4">
-                    <div className="d-flex align-items-center">
-                      <Link to="#">
-                        <img
-                          src={Image}
-                          width={22}
-                          alt="AttachImage"
-                          className="mr-4"
-                        />
-                        Image
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={Documents}
-                          width={22}
-                          alt="AttachDocuments"
-                          className="mr-4"
-                        />
-                        Documents
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={ContactSingle}
-                          width={22}
-                          alt="AttachContacts"
-                          className="mr-4"
-                        />
-                        Contacts
-                      </Link>
-                    </div>
-                    <div className="d-flex align-items-center mt-4">
-                      <Link to="#">
-                        <img
-                          src={Location}
-                          width={22}
-                          alt="AttachLocation"
-                          className="mr-4"
-                        />
-                        Location
-                      </Link>
-                    </div>
-                  </div>
-                )}
+                {showAttach && <Attach></Attach>}
                 <div className="input w-100">
-                  <input
+                  <Input
                     type="text"
                     name="message"
-                    className="form-control"
                     placeholder="Type your message..."
                   />
-                  <div className="d-flex justify-content-between img-container">
-                    <div>
-                      <img
-                        src={Plus}
-                        width={23}
-                        alt="Plus"
-                        className="plus"
-                        onClick={() => handleClickAttach()}
-                      />
-                    </div>
-                    <div>
-                      <img
-                        src={Emoji}
-                        width={23}
-                        alt="Emoji"
-                        className="emoji"
-                        onClick={() => handleClickSoon()}
-                      />
-                    </div>
-                    <div>
-                      <img
-                        src={Select}
-                        width={19}
-                        alt="Select"
-                        className="select"
-                        onClick={() => handleClickSoon()}
-                      />
-                    </div>
-                  </div>
+                  <Feature
+                    attach={handleClickAttach}
+                    soon={handleClickSoon}
+                  ></Feature>
                 </div>
               </div>
             </>
           )}
         </Col>
-        <Col
-          className={`${
-            showContactInfo ? "d-flex" : "d-none"
-          } col-3 pl-4 pr-3 py-4 contact-info flex-column`}
-        >
-          <div className="user-info d-flex justify-content-center align-items-center">
-            <div>
-              <img
-                src={Back}
-                width={10}
-                alt="Back"
-                className="back"
-                onClick={() => handleClickBackInfo()}
-              />
-            </div>
-            <h1 className="text-center ml-4">@mmldolg</h1>
-          </div>
-          <div className="d-flex justify-content-center mt-5">
-            <img src={Mother} width={82} alt="Mother" className="img-user" />
-          </div>
-          <div className="detail-info d-flex justify-content-between mt-4">
-            <div className="d-flex flex-column">
-              <h2>Mother ❤</h2>
-              <p>Online</p>
-            </div>
-            <div>
-              <img src={ChatBlue} width={22} alt="Chat" />
-            </div>
-          </div>
-          <div className="phone-info d-flex flex-column mt-4 pb-2">
-            <h2>Phone number</h2>
-            <p className="mt-1">+375(29)9239003</p>
-          </div>
-          <div className="menu-info d-flex justify-content-between align-items-center mt-4">
-            <button
-              type="button"
-              className={`btn btn-menu-info ${
-                infoCategory === "Location" && "active"
-              }`}
-              onClick={() => handleClickInfoCategory("Location")}
-            >
-              Location
-            </button>
-            <button
-              type="button"
-              className={`btn btn-menu-info ${
-                infoCategory === "Image" && "active"
-              }`}
-              onClick={() => handleClickInfoCategory("Image")}
-            >
-              Image
-            </button>
-            <button
-              type="button"
-              className={`btn btn-menu-info ${
-                infoCategory === "Documents" && "active"
-              }`}
-              onClick={() => handleClickInfoCategory("Documents")}
-            >
-              Documents
-            </button>
-          </div>
-          <div className="img-info-container d-flex justify-content-around align-content-between flex-wrap mt-4">
-            <img src={ContactInfo1} width={85} alt="Contact1" />
-            <img src={ContactInfo2} width={85} alt="Contact2" />
-            <img src={ContactInfo3} width={85} alt="Contact3" />
-            <img src={ContactInfo4} width={85} alt="Contact4" />
-            <img src={ContactInfo5} width={85} alt="Contact5" />
-            <img src={ContactInfo6} width={85} alt="Contact6" />
-            <img src={ContactInfo7} width={85} alt="Contact7" />
-            <img src={ContactInfo8} width={85} alt="Contact8" />
-            <img src={ContactInfo9} width={85} alt="Contact9" />
-            <img src={ContactInfo10} width={85} alt="Contact10" />
-            <img src={ContactInfo11} width={85} alt="Contact11" />
-            <img src={ContactInfo12} width={85} alt="Contact12" />
-            <img src={ContactInfo4} width={85} alt="Contact4" />
-            <img src={ContactInfo5} width={85} alt="Contact5" />
-            <img src={ContactInfo6} width={85} alt="Contact6" />
-          </div>
-        </Col>
+        <ContactInfo
+          showInfo={showContactInfo}
+          info={infoCategory}
+          changeInfo={handleClickInfoCategory}
+          back={handleClickBackInfo}
+        ></ContactInfo>
         <div
           className="modal fade"
           id="exampleModal"
@@ -914,14 +517,9 @@ export default function Chat() {
                 <h5 className="modal-title" id="exampleModalLabel">
                   Change your data
                 </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <Button type="button" className="close" isModal>
                   <span aria-hidden="true">&times;</span>
-                </button>
+                </Button>
               </div>
               <div className="modal-body">
                 <form>
@@ -940,67 +538,55 @@ export default function Chat() {
                       onChange={(event) => handleChangeImage(event)}
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="username"
-                      id="username"
-                      placeholder="Write your username"
-                      value={`${data.username !== "none" ? data.username : ""}`}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      id="name"
-                      placeholder="Write your name"
-                      value={data.name}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="phoneNumber">Phone Number</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="phoneNumber"
-                      id="phoneNumber"
-                      placeholder="Write your phone number"
-                      value={`${
-                        data.phoneNumber !== "none" ? data.phoneNumber : ""
-                      }`}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="bio">Bio</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="bio"
-                      id="bio"
-                      placeholder="Write your bio"
-                      value={`${data.bio !== "none" ? data.bio : ""}`}
-                      onChange={handleFormChange}
-                    />
-                  </div>
+                  <Input
+                    type="text"
+                    name="username"
+                    placeholder="Write your username"
+                    label="Username"
+                    value={`${data.username !== "none" ? data.username : ""}`}
+                    onChange={handleFormChange}
+                    isFormGroup
+                  />
+                  <Input
+                    type="text"
+                    name="name"
+                    placeholder="Write your name"
+                    label="Name"
+                    value={data.name}
+                    onChange={handleFormChange}
+                    isFormGroup
+                  />
+                  <Input
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Write your phone number"
+                    label="Phone Number"
+                    value={`${
+                      data.phoneNumber !== "none" ? data.phoneNumber : ""
+                    }`}
+                    onChange={handleFormChange}
+                    isFormGroup
+                  />
+                  <Input
+                    type="text"
+                    name="bio"
+                    placeholder="Write your bio"
+                    label="Bio"
+                    value={`${data.bio !== "none" ? data.bio : ""}`}
+                    onChange={handleFormChange}
+                    isFormGroup
+                  />
                 </form>
               </div>
               <div className="modal-footer">
-                <button
+                <Button
                   type="button"
-                  className="btn btn-changes"
-                  data-dismiss="modal"
+                  className="btn-changes"
                   onClick={handleSaveChanges}
+                  isModal
                 >
                   Save changes
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -9,6 +9,7 @@ import Container from "../components/module/Container";
 import Row from "../components/module/Row";
 import Col from "../components/module/Col";
 import Input from "../components/module/Input";
+import Button from "../components/module/Button";
 
 import Eye from "../assets/img/eye.png";
 import Google from "../assets/img/google.png";
@@ -94,45 +95,40 @@ export default function Login() {
                 <h1 className="text-center">Login</h1>
                 <p className="my-4">Hi, Welcome back!</p>
                 <form>
-                  <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <Input
-                      type="text"
-                      name="email"
-                      placeholder="Enter your e-mail"
-                      value={data.email}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="form-group password">
-                    <label htmlFor="password">Password</label>
-                    <Input
-                      type={type}
-                      name="password"
-                      placeholder="Enter your password"
-                      value={data.password}
-                      onChange={handleFormChange}
-                    />
-                    <img
-                      src={Eye}
-                      width={24}
-                      height={24}
-                      alt="Eye"
-                      className="eye-img"
-                      onClick={handleToggle}
-                    />
-                  </div>
+                  <Input
+                    type="text"
+                    name="email"
+                    placeholder="Enter your e-mail"
+                    label="Email"
+                    value={data.email}
+                    onChange={handleFormChange}
+                    isFormGroup
+                  />
+                  <Input
+                    type={type}
+                    name="password"
+                    placeholder="Enter your password"
+                    label="Password"
+                    value={data.password}
+                    onChange={handleFormChange}
+                    classFormGroup="password"
+                    alt="Eye"
+                    classImg="eye-img"
+                    onClick={handleToggle}
+                    img={Eye}
+                    isFormGroup
+                  />
                 </form>
                 <Link to="/forgot-password" className="forgot text-right my-4">
                   Forgot password?
                 </Link>
-                <button
+                <Button
                   type="button"
-                  className="btn btn-auth mt-2"
+                  className="btn-auth mt-2"
                   onClick={handleSubmit}
                 >
                   Login
-                </button>
+                </Button>
                 <Row className="mt-4">
                   <Col className="col-4">
                     <hr />
@@ -144,14 +140,14 @@ export default function Login() {
                     <hr />
                   </Col>
                 </Row>
-                <button
+                <Button
                   type="button"
-                  className="btn btn-google d-flex justify-content-center align-items-center mt-4"
+                  className="btn-google d-flex justify-content-center align-items-center mt-4"
                   onClick={() => handleClickGoogle()}
                 >
                   <img src={Google} width={24} height={24} alt="Google" />
                   <span className="ml-2">Login</span>
-                </button>
+                </Button>
                 <p className="account mt-5 text-center">
                   Don’t have an account? <Link to="/register">Sign Up</Link>
                 </p>

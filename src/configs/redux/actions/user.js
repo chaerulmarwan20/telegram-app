@@ -118,7 +118,7 @@ export const activate = ({ email }) => (dispatch) => {
       })
       .catch((err) => {
         dispatch(resetFailure(err.response.data.message));
-        reject(err.response.data.message);
+        reject(new Error(err.response.data.message));
       });
   });
 };
@@ -135,7 +135,7 @@ export const reset = (email, token, data) => (dispatch) => {
         resolve(res.data.message);
       })
       .catch((err) => {
-        reject(err.response.data.message);
+        reject(new Error(err.response.data.message));
       });
   });
 };

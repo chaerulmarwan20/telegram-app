@@ -11,6 +11,7 @@ import Container from "../components/module/Container";
 import Row from "../components/module/Row";
 import Col from "../components/module/Col";
 import Input from "../components/module/Input";
+import Button from "../components/module/Button";
 
 import Eye from "../assets/img/eye.png";
 import Google from "../assets/img/google.png";
@@ -136,43 +137,39 @@ export default function Register() {
                 <h1 className="text-center register">Register</h1>
                 <p className="mt-1 mb-4">Let’s create your account!</p>
                 <form onSubmit={formik.handleSubmit}>
-                  <div
-                    className={`form-group ${
+                  <Input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    label="Name"
+                    classFormGroup={`${
                       formik.errors.name && formik.touched.name && "mb-0"
                     }`}
-                  >
-                    <label htmlFor="name">Name</label>
-                    <Input
-                      type="text"
-                      name="name"
-                      placeholder="Enter your name"
-                      className={`${
-                        formik.errors.name && formik.touched.name && "error"
-                      }`}
-                      value={formik.values.name}
-                      onChange={formik.handleChange}
-                    />
-                  </div>
+                    classInput={`${
+                      formik.errors.name && formik.touched.name && "error"
+                    }`}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    isFormGroup
+                  />
                   {formik.errors.name && formik.touched.name && (
                     <small className="error">{formik.errors.name}</small>
                   )}
-                  <div
-                    className={`form-group ${
+                  <Input
+                    type="text"
+                    name="email"
+                    placeholder="Enter your e-mail"
+                    label="Email"
+                    classFormGroup={`${
                       formik.errors.email && formik.touched.email && "mb-0"
                     }`}
-                  >
-                    <label htmlFor="email">Email</label>
-                    <Input
-                      type="text"
-                      name="email"
-                      placeholder="Enter your e-mail"
-                      className={`${
-                        formik.errors.email && formik.touched.email && "error"
-                      }`}
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                    />
-                  </div>
+                    classInput={`${
+                      formik.errors.email && formik.touched.email && "error"
+                    }`}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    isFormGroup
+                  />
                   {formik.errors.email && formik.touched.email && (
                     <small className="error">{formik.errors.email}</small>
                   )}
@@ -188,7 +185,7 @@ export default function Register() {
                       type={type}
                       name="password"
                       placeholder="Enter your password"
-                      className={`${
+                      classInput={`${
                         formik.errors.password &&
                         formik.touched.password &&
                         "error"
@@ -208,9 +205,9 @@ export default function Register() {
                   {formik.errors.password && formik.touched.password && (
                     <small className="error">{formik.errors.password}</small>
                   )}
-                  <button type="submit" className="btn btn-auth btn-block mt-4">
+                  <Button type="submit" className="btn-auth btn-block mt-4">
                     {!loading ? "Register" : "Please wait..."}
-                  </button>
+                  </Button>
                 </form>
                 <Row className="mt-4">
                   <Col className="col-4">
@@ -223,14 +220,14 @@ export default function Register() {
                     <hr />
                   </Col>
                 </Row>
-                <button
+                <Button
                   type="button"
-                  className="btn btn-google d-flex justify-content-center align-items-center mt-4"
+                  className="btn-google d-flex justify-content-center align-items-center mt-4"
                   onClick={() => handleClickGoogle()}
                 >
                   <img src={Google} width={24} height={24} alt="Google" />
                   <span className="ml-2">Register</span>
-                </button>
+                </Button>
               </div>
             </Col>
           </Row>

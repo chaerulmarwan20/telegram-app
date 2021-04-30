@@ -9,6 +9,7 @@ import Container from "../components/module/Container";
 import Row from "../components/module/Row";
 import Col from "../components/module/Col";
 import Input from "../components/module/Input";
+import Button from "../components/module/Button";
 
 import Eye from "../assets/img/eye.png";
 import Back from "../assets/img/back.png";
@@ -168,63 +169,52 @@ export default function ForgotPassword() {
                 </p>
                 <form>
                   {showPassword === false && (
-                    <div className="form-group">
-                      <label htmlFor="email">Email</label>
-                      <Input
-                        type="text"
-                        name="email"
-                        placeholder="Enter your e-mail"
-                        value={dataEmail.email}
-                        onChange={handleChangeEmail}
-                      />
-                    </div>
+                    <Input
+                      type="text"
+                      name="email"
+                      placeholder="Enter your e-mail"
+                      label="Email"
+                      value={dataEmail.email}
+                      onChange={handleChangeEmail}
+                      isFormGroup
+                    />
                   )}
                   {showPassword && (
                     <>
-                      <div className="form-group password">
-                        <label htmlFor="password">Password</label>
-                        <Input
-                          type={type}
-                          name="password"
-                          placeholder="Enter your new password"
-                          value={data.password}
-                          onChange={handleFormChange}
-                        />
-                        <img
-                          src={Eye}
-                          width={24}
-                          height={24}
-                          alt="Eye"
-                          className="eye-img"
-                          onClick={handleToggle}
-                        />
-                      </div>
-                      <div className="form-group password">
-                        <label htmlFor="confirmPassword">
-                          Confirm Password
-                        </label>
-                        <Input
-                          type={typeConfirm}
-                          name="confirmPassword"
-                          placeholder="Repeat your new password"
-                          value={data.confirmPassword}
-                          onChange={handleFormChange}
-                        />
-                        <img
-                          src={Eye}
-                          width={24}
-                          height={24}
-                          alt="Eye"
-                          className="eye-img"
-                          onClick={handleToggleConfirm}
-                        />
-                      </div>
+                      <Input
+                        type={type}
+                        name="password"
+                        placeholder="Enter your password"
+                        label="Password"
+                        value={data.password}
+                        onChange={handleFormChange}
+                        classFormGroup="password"
+                        alt="Eye"
+                        classImg="eye-img"
+                        onClick={handleToggle}
+                        img={Eye}
+                        isFormGroup
+                      />
+                      <Input
+                        type={typeConfirm}
+                        name="confirmPassword"
+                        placeholder="Repeat your new password"
+                        label="Confirm Password"
+                        value={data.confirmPassword}
+                        onChange={handleFormChange}
+                        classFormGroup="password"
+                        alt="Eye"
+                        classImg="eye-img"
+                        onClick={handleToggleConfirm}
+                        img={Eye}
+                        isFormGroup
+                      />
                     </>
                   )}
                 </form>
-                <button
+                <Button
                   type="button"
-                  className="btn btn-auth mt-4"
+                  className="btn-auth mt-4"
                   onClick={showPassword === false ? handleSend : handleReset}
                 >
                   {showPassword === false
@@ -232,7 +222,7 @@ export default function ForgotPassword() {
                       ? "Send"
                       : "Please wait..."
                     : "Reset Now"}
-                </button>
+                </Button>
               </div>
             </Col>
           </Row>
