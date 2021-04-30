@@ -68,7 +68,7 @@ export const login = (data) => (dispatch) => {
         resolve(res.data.message);
       })
       .catch((err) => {
-        reject(err.response.data.message);
+        reject(new Error(err.response.data.message));
       });
   });
 };

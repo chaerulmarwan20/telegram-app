@@ -84,11 +84,11 @@ section.chat .profile .image img {
   border-radius: 20px;
 }
 
-section.chat .profile.user .image {
+section.chat .profile.user-detail .image {
   transform: translateY(-30px);
 }
 
-section.chat .profile.user .image h1 {
+section.chat .profile.user-detail .image h1 {
   transform: translateY(-18px);
 }
 
@@ -163,6 +163,15 @@ section.chat .create-channel {
   background-color: #7e98df;
 }
 
+section.chat .create-channel div {
+  cursor: pointer;
+  transition: 0.5 ease;
+}
+
+section.chat .create-channel div:hover {
+  opacity: 0.6;
+}
+
 section.chat .header {
   position: relative;
 }
@@ -193,7 +202,6 @@ section.chat .header .detail-menu a:hover {
 }
 
 section.chat .profile-menu {
-  height: 120px;
   background-color: #ffffff;
   position: relative;
 }
@@ -202,7 +210,7 @@ section.chat .profile-menu .chat-menu {
   position: absolute;
   background-color: #7e98df;
   border-radius: 35px 10px 35px 35px;
-  top: 70px;
+  top: 77px;
   right: 60px;
   z-index: 999;
 }
@@ -221,7 +229,8 @@ section.chat .profile-menu .chat-menu a:hover {
   opacity: 0.6;
 }
 
-section.chat .profile-menu img {
+section.chat .profile-menu img.user-img {
+  cursor: pointer;
   border-radius: 20px;
 }
 
@@ -250,7 +259,6 @@ section.chat .right {
 }
 
 section.chat .right .message {
-  height: 120px;
   background-color: #ffffff;
 }
 
@@ -281,6 +289,7 @@ section.chat .right .message .input input.form-control {
   line-height: 19px;
   letter-spacing: -0.165px;
   color: #848484;
+  border: inherit;
 }
 
 section.chat .right .message .input input.form-control::placeholder {
@@ -289,6 +298,35 @@ section.chat .right .message .input input.form-control::placeholder {
   line-height: 19px;
   letter-spacing: -0.165px;
   color: #848484;
+}
+
+section.chat .right .message {
+  position: relative;
+}
+
+section.chat .right .message .attach {
+  width: 250px;
+  position: absolute;
+  box-sizing: border-box;
+  background-color: #7e98df;
+  border-radius: 35px 35px 10px 35px;
+  z-index: 1000;
+  right: 163px;
+  bottom: 70px;
+}
+
+section.chat .right .message .attach a {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 189.93%;
+  letter-spacing: -0.165px;
+  color: #ffffff;
+  transition: 0.5 ease;
+  text-decoration: none;
+}
+
+section.chat .right .message .attach a:hover {
+  opacity: 0.6;
 }
 
 section.chat .right .chating .body {
@@ -302,7 +340,7 @@ section.chat .right .chating .body p.date-send {
   line-height: 156%;
   letter-spacing: -0.165px;
   color: #7e98df;
-  right: 450px;
+  right: 459px;
   top: 50%;
 }
 
@@ -313,7 +351,7 @@ section.chat .right .chating .body p.date-reply {
   line-height: 156%;
   letter-spacing: -0.165px;
   color: #232323;
-  right: 385px;
+  right: 382px;
   top: 50%;
 }
 
@@ -337,6 +375,89 @@ section.chat .right .chating .body .reply {
   line-height: 185.17%;
   letter-spacing: -0.165px;
   color: #232323;
+}
+
+section.chat .contact-info {
+  border-left: 1px solid #e5e5e5;
+}
+
+section.chat .contact-info .user-info h1 {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #7e98df;
+  transform: translateY(3px);
+}
+
+section.chat .contact-info .user-info img.back {
+  cursor: pointer;
+}
+
+section.chat .contact-info img.img-user {
+  border-radius: 30px;
+}
+
+section.chat .contact-info .detail-info h2 {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .contact-info .detail-info p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 1.335px;
+  color: #232323;
+  transform: translateY(-5px);
+}
+
+section.chat .contact-info .detail-info img {
+  transform: translateY(15px);
+}
+
+section.chat .contact-info .phone-info {
+  box-sizing: border-box;
+  border-bottom: 2px solid #f6f6f6;
+}
+
+section.chat .contact-info .phone-info h2 {
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 23px;
+  color: #232323;
+}
+
+section.chat .contact-info .phone-info p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 1.335px;
+  color: #232323;
+}
+
+section.chat .contact-info .menu-info .btn-menu-info {
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: -0.165px;
+  color: #232323;
+}
+
+section.chat .contact-info .menu-info .btn-menu-info.active {
+  background-color: #7e98df;
+  border-radius: 20px;
+  color: #ffffff;
+  padding: 13px 18px;
+}
+
+section.chat .contact-info .img-info-container img {
+  border-radius: 20px;
+  margin-top: 15px;
 }
 
 section.chat .profile h1 {
@@ -473,6 +594,10 @@ section.chat .btn-changes:hover {
 
 section.chat .modal-content {
   border-radius: 20px;
+}
+
+section.chat .modal-content .modal-header button {
+  border: 0px;
 }
 
 section.chat .modal-content .modal-body input.form-control {
