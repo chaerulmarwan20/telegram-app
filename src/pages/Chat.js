@@ -10,6 +10,7 @@ import {
   searchUser,
   getReceiver,
   getMessages,
+  deleteMessages,
 } from "../configs/redux/actions/user";
 
 import Col from "../components/module/Col";
@@ -291,6 +292,52 @@ export default function Chat(props) {
     );
   };
 
+  const handleClickDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will delete chat history!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete!",
+      confirmButtonColor: "#FF0000",
+      cancelButtonText: "No, cancel!",
+      cancelButtonColor: "#1EC15F",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteMessages(localStorage.getItem("id"), idFriend))
+          .then((res) => {
+            setShowChat(false);
+            setShowChatMenu(false);
+            setChatingMobile(false);
+            setChatMobile(true);
+            Swal.fire({
+              title: "Delete chat history",
+              text: "Successfully.",
+              icon: "success",
+              confirmButtonColor: "#7E98DF",
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "Error!",
+              text: err.message,
+              icon: "error",
+              confirmButtonText: "Ok",
+              confirmButtonColor: "#7E98DF",
+            });
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: "Delete chat history",
+          text: "Cancelled :)",
+          icon: "info",
+          confirmButtonColor: "#7E98DF",
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     dispatch(findUser())
       .then((res) => {
@@ -415,7 +462,7 @@ export default function Chat(props) {
                             /> */}
                           </span>
                           <span className="message active mt-2">
-                            {item.phoneNumber}
+                            {item.username}
                           </span>
                         </div>
                       </div>
@@ -510,7 +557,7 @@ export default function Chat(props) {
                             /> */}
                             </span>
                             <span className="message active mt-2">
-                              {item.phoneNumber}
+                              {item.username}
                             </span>
                           </div>
                         </div>
@@ -565,7 +612,9 @@ export default function Chat(props) {
                 <Button type="button" onClick={() => handleClickChatMenu()}>
                   <img src={ProfileMenu} width={20} alt="Profile Menu" />
                 </Button>
-                {showChatMenu && <ChatMenu></ChatMenu>}
+                {showChatMenu && (
+                  <ChatMenu delete={handleClickDelete}></ChatMenu>
+                )}
               </div>
               <div className="chating d-flex flex-column h-100 pb-4 px-5">
                 {messages.map((item, index) =>
@@ -666,7 +715,7 @@ export default function Chat(props) {
               <Button type="button" onClick={() => handleClickChatMenu()}>
                 <img src={ProfileMenu} width={20} alt="Profile Menu" />
               </Button>
-              {showChatMenu && <ChatMenu></ChatMenu>}
+              {showChatMenu && <ChatMenu delete={handleClickDelete}></ChatMenu>}
             </div>
             <div className="chating mobile d-flex flex-column h-100 pb-4 px-5 w-100">
               {messages.map((item, index) =>

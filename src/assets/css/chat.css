@@ -256,7 +256,7 @@ section.chat .left {
 }
 
 section.chat .right.mobile {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 section.chat .right {

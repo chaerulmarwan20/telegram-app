@@ -211,3 +211,17 @@ export const getMessages = (idSender, idReceiver) => (dispatch) => {
       });
   });
 };
+
+export const deleteMessages = (idSender, idReceiver) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.REACT_APP_API_URL;
+    axiosApiInstance
+      .delete(`${Url}/users/messages/${idSender}/${idReceiver}`)
+      .then((res) => {
+        resolve(res.data.message);
+      })
+      .catch((err) => {
+        reject(new Error(err.response.data.message));
+      });
+  });
+};
