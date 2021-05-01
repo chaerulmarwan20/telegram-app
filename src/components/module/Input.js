@@ -42,6 +42,18 @@ export default function Input(props) {
         onClick={props.onClick}
       />
     </div>
+  ) : props.isFocus ? (
+    <input
+      type={props.type}
+      className={classInput.join(" ")}
+      name={props.name}
+      id={props.name}
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={props.onChange}
+      autoComplete="off"
+      autoFocus
+    />
   ) : (
     <input
       type={props.type}
@@ -64,4 +76,5 @@ Input.propTypes = {
   placeholder: propTypes.string,
   onChange: propTypes.func,
   isFormGroup: propTypes.bool,
+  isFocus: propTypes.bool,
 };
