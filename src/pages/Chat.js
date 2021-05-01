@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { animateScroll as scroll } from "react-scroll";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import {
   findUser,
@@ -31,6 +33,7 @@ import Menu from "../assets/img/menu.png";
 import Plus from "../assets/img/plus.png";
 import ProfileMenu from "../assets/img/profile-menu.png";
 import Search from "../assets/img/search.png";
+import Online from "../assets/img/dot.png";
 
 export default function Chat(props) {
   const UrlImage = process.env.REACT_APP_API_IMG;
@@ -369,10 +372,12 @@ export default function Chat(props) {
   useEffect(() => {
     if (socket) {
       socket.on("recMessage", (data) => {
+        const notify = () => toast("You have new message!");
+        notify();
         setMessages(data);
       });
     }
-  }, [socket, data]);
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
@@ -397,6 +402,7 @@ export default function Chat(props) {
           <meta charSet="utf-8" />
           <title>Telegram App - Chat</title>
         </Helmet>
+        <ToastContainer />
         <Col className="d-none d-lg-block col-xl-3 col-lg-4 col-12 pl-4 pr-3 py-4 left">
           {!showProfile && (
             <>
@@ -450,6 +456,12 @@ export default function Chat(props) {
                               alt="Theresa"
                             />
                           )}
+                          <img
+                            src={Online}
+                            width={20}
+                            alt="Online"
+                            className="online"
+                          />
                         </div>
                         <div className="info d-flex flex-column ml-3">
                           <span className="name">
@@ -510,7 +522,7 @@ export default function Chat(props) {
                     <img src={Search} width={22} alt="search" />
                     <Input
                       type="text"
-                      name="search"
+                      name="keyword"
                       placeholder="Search user here..."
                       value={query}
                       onChange={handleChangeSearch}
@@ -545,6 +557,12 @@ export default function Chat(props) {
                                 alt="Theresa"
                               />
                             )}
+                            <img
+                              src={Online}
+                              width={20}
+                              alt="Online"
+                              className="online"
+                            />
                           </div>
                           <div className="info d-flex flex-column ml-3">
                             <span className="name">
