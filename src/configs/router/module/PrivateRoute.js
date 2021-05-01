@@ -7,7 +7,11 @@ function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        isLogin ? <Component {...props} /> : <Redirect to="/" />
+        isLogin ? (
+          <Component {...props} socket={rest.socket} />
+        ) : (
+          <Redirect to="/" />
+        )
       }
     />
   );

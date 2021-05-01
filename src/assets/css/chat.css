@@ -251,7 +251,12 @@ section.chat .profile-menu span.status {
 }
 
 section.chat .left {
+  min-height: 100vh;
   border-right: 1px solid #e5e5e5;
+}
+
+section.chat .right.mobile {
+  height: 100vh;
 }
 
 section.chat .right {
@@ -334,25 +339,19 @@ section.chat .right .chating .body {
 }
 
 section.chat .right .chating .body p.date-send {
-  position: absolute;
   font-weight: 400;
   font-size: 15px;
   line-height: 156%;
   letter-spacing: -0.165px;
   color: #7e98df;
-  right: 459px;
-  top: 50%;
 }
 
 section.chat .right .chating .body p.date-reply {
-  position: absolute;
   font-weight: 400;
   font-size: 15px;
   line-height: 156%;
   letter-spacing: -0.165px;
   color: #232323;
-  right: 382px;
-  top: 50%;
 }
 
 section.chat .right .chating .body .send {
@@ -375,6 +374,10 @@ section.chat .right .chating .body .reply {
   line-height: 185.17%;
   letter-spacing: -0.165px;
   color: #232323;
+}
+
+section.chat .right .chating .body img {
+  border-radius: 20px;
 }
 
 section.chat .contact-info {

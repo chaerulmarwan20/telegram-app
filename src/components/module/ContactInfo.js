@@ -3,7 +3,6 @@ import React from "react";
 import Col from "./Col";
 import Button from "./Button";
 
-import Mother from "../../assets/img/mother.png";
 import ChatBlue from "../../assets/img/chat-blue.png";
 import ContactInfo1 from "../../assets/img/contact1.png";
 import ContactInfo2 from "../../assets/img/contact2.png";
@@ -36,14 +35,14 @@ export default function ContactInfo(props) {
             onClick={props.back}
           />
         </div>
-        <h1 className="text-center ml-4">@mmldolg</h1>
+        <h1 className="text-center ml-4">{props.username}</h1>
       </div>
       <div className="d-flex justify-content-center mt-5">
-        <img src={Mother} width={82} alt="Mother" className="img-user" />
+        <img src={props.image} width={82} alt="Mother" className="img-user" />
       </div>
       <div className="detail-info d-flex justify-content-between mt-4">
         <div className="d-flex flex-column">
-          <h2>Mother ❤</h2>
+          <h2>{props.name}</h2>
           <p>Online</p>
         </div>
         <div>
@@ -52,7 +51,7 @@ export default function ContactInfo(props) {
       </div>
       <div className="phone-info d-flex flex-column mt-4 pb-2">
         <h2>Phone number</h2>
-        <p className="mt-1">+375(29)9239003</p>
+        <p className="mt-1">{props.phone}</p>
       </div>
       <div className="menu-info d-flex justify-content-center align-items-center flex-wrap mt-4">
         <Button

@@ -1,5 +1,8 @@
 const initialState = {
   user: {},
+  userTarget: [],
+  userMessages: [],
+  receiver: {},
   loading: false,
   error: "",
 };
@@ -54,6 +57,26 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case "GET_USER":
+      return {
+        ...state,
+        userTarget: action.payload,
+      };
+    case "SEARCH_USER":
+      return {
+        ...state,
+        userTarget: action.payload,
+      };
+    case "GET_RECEIVER":
+      return {
+        ...state,
+        receiver: action.payload,
+      };
+    case "GET_MESSAGES":
+      return {
+        ...state,
+        userMessages: action.payload,
       };
     default:
       return state;

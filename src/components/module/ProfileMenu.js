@@ -1,6 +1,5 @@
 import React from "react";
 
-import Mother from "../../assets/img/mother.png";
 import Back from "../../assets/img/back.png";
 
 export default function ProfileMenu(props) {
@@ -17,7 +16,7 @@ export default function ProfileMenu(props) {
         />
       </div>
       <img
-        src={Mother}
+        src={props.image}
         width={64}
         alt="Mother"
         className="user-img"
@@ -28,7 +27,7 @@ export default function ProfileMenu(props) {
         style={{ cursor: "pointer" }}
         onClick={props.contactInfo}
       >
-        <span className="name">Mother ❤</span>
+        <span className="name">{props.name}</span>
         <span className="status mt-1">Online</span>
       </div>
     </div>

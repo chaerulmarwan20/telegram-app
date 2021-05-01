@@ -139,3 +139,75 @@ export const reset = (email, token, data) => (dispatch) => {
       });
   });
 };
+
+export const getUser = () => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.REACT_APP_API_URL;
+    axiosApiInstance
+      .get(`${Url}/users?perPage=5`)
+      .then((res) => {
+        dispatch({
+          type: "GET_USER",
+          payload: res.data.data,
+        });
+        resolve(res.data.data);
+      })
+      .catch((err) => {
+        reject(new Error(err.response.data.message));
+      });
+  });
+};
+
+export const searchUser = (data) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.REACT_APP_API_URL;
+    axiosApiInstance
+      .get(`${Url}/users/?keyword=${data}&perPage=5`)
+      .then((res) => {
+        dispatch({
+          type: "SEARCH_USER",
+          payload: res.data.data,
+        });
+        resolve(res.data.data);
+      })
+      .catch((err) => {
+        reject(new Error(err.response.data.message));
+      });
+  });
+};
+
+export const getReceiver = (id) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.REACT_APP_API_URL;
+    axiosApiInstance
+      .get(`${Url}/users/find-user/${id}`)
+      .then((res) => {
+        dispatch({
+          type: "GET_RECEIVER",
+          payload: res.data.data[0],
+        });
+        resolve(res.data.data[0]);
+      })
+      .catch((err) => {
+        reject(new Error(err.response.data.message));
+      });
+  });
+};
+
+export const getMessages = (idSender, idReceiver) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.REACT_APP_API_URL;
+    axiosApiInstance
+      .get(`${Url}/users/messages/${idSender}/${idReceiver}`)
+      .then((res) => {
+        dispatch({
+          type: "GET_MESSAGES",
+          payload: res.data.data,
+        });
+        resolve(res.data.data);
+      })
+      .catch((err) => {
+        reject(new Error(err.response.data.message));
+      });
+  });
+};

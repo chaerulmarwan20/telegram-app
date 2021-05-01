@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { animateScroll as scroll } from "react-scroll";
 import Swal from "sweetalert2";
-import { findUser, update } from "../configs/redux/actions/user";
+import {
+  findUser,
+  update,
+  getUser,
+  searchUser,
+  getReceiver,
+  getMessages,
+} from "../configs/redux/actions/user";
 
 import Col from "../components/module/Col";
 import Input from "../components/module/Input";
@@ -16,32 +23,24 @@ import ProfileMenuComp from "../components/module/ProfileMenu";
 import Attach from "../components/module/Attach";
 import Feature from "../components/module/Feature";
 import ContactInfo from "../components/module/ContactInfo";
+import ContactInfoMobile from "../components/module/ContactInfoMobile";
 import Profile from "../components/module/Profile";
 
 import Menu from "../assets/img/menu.png";
 import Plus from "../assets/img/plus.png";
-import Union from "../assets/img/union.png";
-import Online from "../assets/img/dot.png";
-import Theresa from "../assets/img/theresa.png";
-import Flores from "../assets/img/flores.png";
-import Bell from "../assets/img/bell.png";
-import Henry from "../assets/img/henry.png";
-import Mother from "../assets/img/mother.png";
-import Brother from "../assets/img/brother.png";
-import CheckBlue from "../assets/img/check-blue.png";
-import CheckGrey from "../assets/img/check-grey.png";
 import ProfileMenu from "../assets/img/profile-menu.png";
-import Gloria from "../assets/img/gloria.png";
 import Search from "../assets/img/search.png";
 
-export default function Chat() {
+export default function Chat(props) {
   const UrlImage = process.env.REACT_APP_API_IMG;
+
+  const socket = props.socket;
 
   const dispatch = useDispatch();
 
   const imageRef = useRef(null);
 
-  const { user } = useSelector((state) => state.user);
+  const { user, userTarget, receiver } = useSelector((state) => state.user);
 
   const [data, setData] = useState({
     username: "",
@@ -61,8 +60,17 @@ export default function Chat() {
   const [showChatMenu, setShowChatMenu] = useState(false);
   const [showAttach, setShowAttach] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
+  const [chatMobile, setChatMobile] = useState(true);
+  const [chatingMobile, setChatingMobile] = useState(false);
+  const [infoMobile, setInfoMobile] = useState(false);
   const [category, setCategory] = useState("Important");
   const [infoCategory, setInfoCategory] = useState("Image");
+  const [query, setQuery] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [empty, setEmpty] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [idFriend, setIdFriend] = useState(null);
 
   const handleFormChange = (event) => {
     const dataNew = { ...data };
@@ -77,6 +85,52 @@ export default function Chat() {
     setDataImage({
       image: imgFiles,
     });
+  };
+
+  const handleClickChatMobile = (id) => {
+    setChatingMobile(true);
+    setChatMobile(false);
+    setIdFriend(id);
+    dispatch(getMessages(localStorage.getItem("id"), id))
+      .then((res) => {
+        setMessages(res);
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#7E98DF",
+        });
+      });
+    dispatch(getReceiver(id))
+      .then((res) => {})
+      .catch((err) => {
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#7E98DF",
+        });
+      });
+    scroll.scrollToBottom();
+  };
+
+  const handleClickBackMobile = () => {
+    setChatingMobile(false);
+    setChatMobile(true);
+  };
+
+  const handleClickContactInfoMobile = () => {
+    setChatingMobile(false);
+    setInfoMobile(true);
+  };
+
+  const handleClickBackInfoMobile = () => {
+    setChatingMobile(true);
+    setInfoMobile(false);
   };
 
   const handleClickMenu = () => {
@@ -100,13 +154,34 @@ export default function Chat() {
     setInfoCategory(params);
   };
 
-  const handleClickChat = () => {
-    setShowChat(!showChat);
-    if (!showChat) {
-      scroll.scrollToBottom();
-    } else {
-      scroll.scrollToTop();
-    }
+  const handleClickChat = (id) => {
+    setShowChat(true);
+    setIdFriend(id);
+    dispatch(getMessages(localStorage.getItem("id"), id))
+      .then((res) => {
+        setMessages(res);
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#7E98DF",
+        });
+      });
+    dispatch(getReceiver(id))
+      .then((res) => {})
+      .catch((err) => {
+        Swal.fire({
+          title: "Error!",
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#7E98DF",
+        });
+      });
+    scroll.scrollToBottom();
   };
 
   const handleClickProfile = () => {
@@ -171,6 +246,51 @@ export default function Chat() {
     });
   };
 
+  const handleChangeSearch = (event) => {
+    setQuery(event.target.value);
+    dispatch(searchUser(event.target.value))
+      .then((res) => {
+        if (event.target.value === "") {
+          dispatch(getUser())
+            .then((res) => {
+              setEmpty(false);
+            })
+            .catch((err) => {
+              setEmpty(true);
+            });
+          setEmpty(false);
+        }
+        setEmpty(false);
+      })
+      .catch((err) => {
+        setEmpty(true);
+      });
+  };
+
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+    setKeyword(e.target.value);
+    if (e.keyCode === 13) {
+      setKeyword("");
+      handleSendMessage();
+    }
+  };
+
+  const handleSendMessage = () => {
+    socket.emit(
+      "sendMessage",
+      {
+        message: message,
+        receiverId: idFriend,
+        senderId: localStorage.getItem("id"),
+      },
+      (data) => {
+        console.log("callback", data);
+        setMessages(data);
+      }
+    );
+  };
+
   useEffect(() => {
     dispatch(findUser())
       .then((res) => {
@@ -199,6 +319,30 @@ export default function Chat() {
       });
   }, [dispatch, UrlImage]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on("recMessage", (data) => {
+        setMessages(data);
+      });
+    }
+  }, [socket, data]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("initialLogin", localStorage.getItem("id"));
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    dispatch(getUser())
+      .then((res) => {
+        setEmpty(false);
+      })
+      .catch((err) => {
+        setEmpty(true);
+      });
+  }, [dispatch]);
+
   return (
     <HelmetProvider>
       <section className="chat">
@@ -225,7 +369,9 @@ export default function Chat() {
                   <Input
                     type="text"
                     name="search"
-                    placeholder="Type your message..."
+                    placeholder="Search user here..."
+                    value={query}
+                    onChange={handleChangeSearch}
                   />
                 </div>
                 <Button
@@ -240,163 +386,49 @@ export default function Chat() {
                 category={category}
                 changeCategory={handleClickCategory}
               ></MenuComp>
-              <div
-                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
-                onClick={() => handleClickChat()}
-              >
-                <div className="profile d-flex align-items-center">
-                  <div className="image">
-                    <img src={Theresa} width={64} alt="Theresa" />
-                  </div>
-                  <div className="info d-flex flex-column ml-3">
-                    <span className="name">
-                      Theresa Webb
-                      <img
-                        src={Union}
-                        width={16}
-                        alt="Union"
-                        className="ml-2"
-                      />
-                    </span>
-                    <span className="message active mt-2">
-                      Why did you do that?
-                    </span>
-                  </div>
-                </div>
-                <div className="time d-flex flex-column">
-                  <span>15:20</span>
-                  <div className="notif mt-2">2</div>
-                </div>
-              </div>
-              <div
-                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
-                onClick={() => handleClickChat()}
-              >
-                <div className="profile d-flex align-items-center">
-                  <div className="image">
-                    <img src={Flores} width={64} alt="Flores" />
-                    <img
-                      src={Online}
-                      width={20}
-                      alt="Online"
-                      className="online"
-                    />
-                  </div>
-                  <div className="info d-flex flex-column ml-3">
-                    <span className="name">Calvin Flores</span>
-                    <span className="message active mt-2">
-                      Hi, bro! Come to my house!
-                    </span>
-                  </div>
-                </div>
-                <div className="time d-flex flex-column">
-                  <span>15:13</span>
-                  <div className="notif mt-2">1</div>
-                </div>
-              </div>
-              <div
-                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
-                onClick={() => handleClickChat()}
-              >
-                <div className="profile d-flex align-items-center">
-                  <div className="image">
-                    <img src={Bell} width={64} alt="Bell" />
-                  </div>
-                  <div className="info d-flex flex-column ml-3">
-                    <span className="name">Gregory Bell</span>
-                    <span className="message active mt-2">
-                      Will you stop ignoring me?
-                    </span>
-                  </div>
-                </div>
-                <div className="time d-flex flex-column">
-                  <span>15:13</span>
-                  <div className="notif mt-2">164</div>
-                </div>
-              </div>
-              <div
-                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
-                onClick={() => handleClickChat()}
-              >
-                <div className="profile d-flex align-items-center">
-                  <div className="image">
-                    <img src={Henry} width={64} alt="henry" />
-                  </div>
-                  <div className="info d-flex flex-column ml-3">
-                    <span className="name">
-                      Soham Henry
-                      <img
-                        src={Union}
-                        width={16}
-                        alt="Union"
-                        className="ml-2"
-                      />
-                    </span>
-                    <span className="message mt-2">Me: Bro, just fuck off</span>
-                  </div>
-                </div>
-                <div className="time d-flex flex-column">
-                  <span>8:30</span>
-                  <div className="check">
-                    <img
-                      src={CheckBlue}
-                      width={20}
-                      alt="CheckBlue"
-                      className="mt-2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
-                onClick={() => handleClickChat()}
-              >
-                <div className="profile d-flex align-items-center">
-                  <div className="image">
-                    <img src={Mother} width={64} alt="Mother" />
-                    <img
-                      src={Online}
-                      width={20}
-                      alt="Online"
-                      className="online"
-                    />
-                  </div>
-                  <div className="info d-flex flex-column ml-3">
-                    <span className="name">Mother ❤</span>
-                    <span className="message mt-2">
-                      Me: Yes, of course come, ...
-                    </span>
-                  </div>
-                </div>
-                <div className="time d-flex flex-column">
-                  <span>7:20</span>
-                  <div className="check">
-                    <img
-                      src={CheckGrey}
-                      width={20}
-                      alt="CheckGrey"
-                      className="mt-2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
-                onClick={() => handleClickChat()}
-              >
-                <div className="profile d-flex align-items-center">
-                  <div className="image">
-                    <img src={Brother} width={64} alt="Brother" />
-                  </div>
-                  <div className="info d-flex flex-column ml-3">
-                    <span className="name">Brother</span>
-                    <span className="message mt-2">Ok. Good bay!</span>
-                  </div>
-                </div>
-                <div className="time d-flex flex-column">
-                  <span>Yesterday</span>
-                </div>
-              </div>
+              {empty === false &&
+                userTarget.map((item, index) => {
+                  return (
+                    <div
+                      className="user d-none d-lg-flex justify-content-between align-items-center mt-4"
+                      key={index}
+                      onClick={() => handleClickChat(item.id)}
+                    >
+                      <div className="profile d-flex align-items-center">
+                        <div className="image">
+                          {item.image !== undefined && (
+                            <img
+                              src={`${UrlImage}${item.image}`}
+                              width={64}
+                              alt="Theresa"
+                            />
+                          )}
+                        </div>
+                        <div className="info d-flex flex-column ml-3">
+                          <span className="name">
+                            {item.name}
+                            {/* <img
+                              src={Union}
+                              width={16}
+                              alt="Union"
+                              className="ml-2"
+                            /> */}
+                          </span>
+                          <span className="message active mt-2">
+                            {item.phoneNumber}
+                          </span>
+                        </div>
+                      </div>
+                      {/* <div className="time d-flex flex-column">
+                        <span>15:20</span>
+                        <div className="notif mt-2">2</div>
+                      </div> */}
+                    </div>
+                  );
+                })}
+              {empty === true && (
+                <p className="text-center mt-4">User not found</p>
+              )}
             </>
           )}
           {showProfile && (
@@ -404,7 +436,7 @@ export default function Chat() {
               <Profile
                 back={handleClickBack}
                 username={user.username}
-                image={`${UrlImage}${user.image}`}
+                image={`${user.image !== undefined && UrlImage + user.image}`}
                 phone={user.phoneNumber}
                 bio={user.bio}
                 name={user.name}
@@ -412,6 +444,102 @@ export default function Chat() {
             </>
           )}
         </Col>
+        {chatMobile && (
+          <Col className="d-block d-lg-none col-xl-3 col-lg-4 col-12 pl-4 pr-3 py-4 left">
+            {!showProfile && (
+              <>
+                <div className="header d-flex justify-content-between align-items-center">
+                  {!showChannel && <h1>Telegram</h1>}
+                  {showChannel && <Channel></Channel>}
+                  <Button type="button" onClick={() => handleClickMenu()}>
+                    <img src={Menu} width={22} alt="Menu" />
+                  </Button>
+                  {showDetail && (
+                    <DetailMenu showProfile={handleClickProfile}></DetailMenu>
+                  )}
+                </div>
+                <div className="search mt-4 d-flex justify-content-center align-items-center">
+                  <div className="input-search">
+                    <img src={Search} width={22} alt="search" />
+                    <Input
+                      type="text"
+                      name="search"
+                      placeholder="Search user here..."
+                      value={query}
+                      onChange={handleChangeSearch}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    className="d-none"
+                    onClick={() => handleClickPlus()}
+                  >
+                    <img src={Plus} width={23} alt="Plus" />
+                  </Button>
+                </div>
+                <MenuComp
+                  category={category}
+                  changeCategory={handleClickCategory}
+                ></MenuComp>
+                {empty === false &&
+                  userTarget.map((item, index) => {
+                    return (
+                      <div
+                        className="user d-flex d-lg-none justify-content-between align-items-center mt-4"
+                        key={index}
+                        onClick={() => handleClickChatMobile(item.id)}
+                      >
+                        <div className="profile d-flex align-items-center">
+                          <div className="image">
+                            {item.image !== undefined && (
+                              <img
+                                src={`${UrlImage}${item.image}`}
+                                width={64}
+                                alt="Theresa"
+                              />
+                            )}
+                          </div>
+                          <div className="info d-flex flex-column ml-3">
+                            <span className="name">
+                              {item.name}
+                              {/* <img
+                              src={Union}
+                              width={16}
+                              alt="Union"
+                              className="ml-2"
+                            /> */}
+                            </span>
+                            <span className="message active mt-2">
+                              {item.phoneNumber}
+                            </span>
+                          </div>
+                        </div>
+                        {/* <div className="time d-flex flex-column">
+                        <span>15:20</span>
+                        <div className="notif mt-2">2</div>
+                      </div> */}
+                      </div>
+                    );
+                  })}
+                {empty === true && (
+                  <p className="text-center mt-4">User not found</p>
+                )}
+              </>
+            )}
+            {showProfile && (
+              <>
+                <Profile
+                  back={handleClickBack}
+                  username={user.username}
+                  image={`${UrlImage}${user.image}`}
+                  phone={user.phoneNumber}
+                  bio={user.bio}
+                  name={user.name}
+                ></Profile>
+              </>
+            )}
+          </Col>
+        )}
         <Col
           className={`${
             !showContactInfo
@@ -428,6 +556,10 @@ export default function Chat() {
             <>
               <div className="profile-menu d-flex justify-content-between align-items-center w-100 py-4 px-5">
                 <ProfileMenuComp
+                  image={`${
+                    receiver.image !== undefined && UrlImage + receiver.image
+                  }`}
+                  name={receiver.name}
                   contactInfo={handleClickContactInfo}
                 ></ProfileMenuComp>
                 <Button type="button" onClick={() => handleClickChatMenu()}>
@@ -435,67 +567,71 @@ export default function Chat() {
                 </Button>
                 {showChatMenu && <ChatMenu></ChatMenu>}
               </div>
-              <div className="chating d-flex flex-column h-100 py-4 px-5">
-                <div className="body d-flex align-items-end justify-content-start">
-                  <div className="mr-3">
-                    <img src={Mother} width={54} alt="Mother" />
-                  </div>
-                  <div className="send py-3 px-4">
-                    Hi, Gloria, how are you doing? Today, my father and I went
-                    to buy a car, bought a cool car.
-                  </div>
-                  {/* <p className={`date-send ${showContactInfo && "d-none"}`}>
-                    Wed. 20:32
-                  </p> */}
-                </div>
-                <div className="body d-flex align-items-start justify-content-end mt-5">
-                  <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
-                  <div className="ml-3">
-                    <img src={Gloria} width={54} alt="Gloria" />
-                  </div>
-                  {/* <p className={`date-reply ${showContactInfo && "d-none"}`}>
-                    Wed. 20:32
-                  </p> */}
-                </div>
-                <div className="body d-flex align-items-end justify-content-start mt-5">
-                  <div className="mr-3">
-                    <img src={Mother} width={54} alt="Mother" />
-                  </div>
-                  <div className="send py-3 px-4">Ok😉</div>
-                </div>
-                <div className="body d-flex align-items-start justify-content-end mt-5">
-                  <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
-                  <div className="ml-3">
-                    <img src={Gloria} width={54} alt="Gloria" />
-                  </div>
-                </div>
-                <div className="body d-flex align-items-end justify-content-start mt-5">
-                  <div className="mr-3">
-                    <img src={Mother} width={54} alt="Mother" />
-                  </div>
-                  <div className="send py-3 px-4">Will we arrive tomorrow?</div>
-                </div>
-                <div className="body d-flex align-items-start justify-content-end mt-5">
-                  <div className="reply py-3 px-4">Oh! Cool Send me photo</div>
-                  <div className="ml-3">
-                    <img src={Gloria} width={54} alt="Gloria" />
-                  </div>
-                </div>
-                <div className="body d-flex align-items-end justify-content-start mt-5">
-                  <div className="mr-3">
-                    <img src={Mother} width={54} alt="Mother" />
-                  </div>
-                  <div className="send py-3 px-4">Thankyou</div>
-                </div>
+              <div className="chating d-flex flex-column h-100 pb-4 px-5">
+                {messages.map((item, index) =>
+                  item.type === "send" &&
+                  item.senderId === Number(localStorage.getItem("id")) &&
+                  item.targetId === idFriend ? (
+                    <div
+                      className="body d-flex align-items-start justify-content-end mt-4"
+                      key={index}
+                    >
+                      <p
+                        className={`date-reply mt-4 mr-3 ${
+                          showContactInfo && "d-none"
+                        }`}
+                      >
+                        {item.time}
+                      </p>
+                      <div className="reply py-3 px-4">{item.message}</div>
+                      <div className="ml-3">
+                        <img
+                          src={`${UrlImage + user.image}`}
+                          width={54}
+                          alt="User"
+                        />
+                      </div>
+                    </div>
+                  ) : item.type === "receive" &&
+                    item.senderId === Number(localStorage.getItem("id")) &&
+                    item.targetId === idFriend ? (
+                    <div
+                      className="body d-flex align-items-end justify-content-start mt-4"
+                      key={index}
+                    >
+                      <div className="mr-3">
+                        <img
+                          src={`${UrlImage + receiver.image}`}
+                          width={54}
+                          alt="User"
+                        />
+                      </div>
+                      <div className="send py-3 px-4">{item.message}</div>
+                      <p
+                        className={`date-send ml-3 ${
+                          showContactInfo && "d-none"
+                        }`}
+                      >
+                        {item.time}
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )
+                )}
               </div>
               <div className="message w-100 py-4 px-5 d-flex justify-content-center align-items-center">
                 {showAttach && <Attach></Attach>}
                 <div className="input w-100">
-                  <Input
+                  <input
                     type="text"
                     name="message"
+                    className="form-control"
                     placeholder="Type your message..."
-                    isFocus
+                    value={keyword}
+                    onChange={handleMessageChange}
+                    onKeyUp={handleMessageChange}
+                    autoFocus
                   />
                   <Feature
                     attach={handleClickAttach}
@@ -506,12 +642,130 @@ export default function Chat() {
             </>
           )}
         </Col>
+        {chatingMobile && (
+          <Col
+            className={`${
+              !showContactInfo
+                ? "col-xl-9 col-lg-8 col-12"
+                : "col-xl-6 col-lg-5 col-12"
+            } d-flex d-lg-none flex-column px-0 py-0 right mobile ${
+              !showChat
+                ? "justify-content-center align-items-center"
+                : "justify-content-between"
+            }`}
+          >
+            <div className="profile-menu d-flex justify-content-between align-items-center w-100 py-4 px-5">
+              <ProfileMenuComp
+                image={`${
+                  receiver.image !== undefined && UrlImage + receiver.image
+                }`}
+                name={receiver.name}
+                contactInfo={handleClickContactInfoMobile}
+                back={handleClickBackMobile}
+              ></ProfileMenuComp>
+              <Button type="button" onClick={() => handleClickChatMenu()}>
+                <img src={ProfileMenu} width={20} alt="Profile Menu" />
+              </Button>
+              {showChatMenu && <ChatMenu></ChatMenu>}
+            </div>
+            <div className="chating mobile d-flex flex-column h-100 pb-4 px-5 w-100">
+              {messages.map((item, index) =>
+                item.type === "send" &&
+                item.senderId === Number(localStorage.getItem("id")) &&
+                item.targetId === idFriend ? (
+                  <div
+                    className="body d-flex align-items-start justify-content-end mt-4"
+                    key={index}
+                  >
+                    <p
+                      className={`date-reply mt-4 mr-3 ${
+                        showContactInfo && "d-none"
+                      }`}
+                    >
+                      {item.time}
+                    </p>
+                    <div className="reply py-3 px-4">{item.message}</div>
+                    <div className="ml-3">
+                      <img
+                        src={`${UrlImage + user.image}`}
+                        width={54}
+                        alt="User"
+                      />
+                    </div>
+                  </div>
+                ) : item.type === "receive" &&
+                  item.senderId === Number(localStorage.getItem("id")) &&
+                  item.targetId === idFriend ? (
+                  <div
+                    className="body d-flex align-items-end justify-content-start mt-5"
+                    key={index}
+                  >
+                    <div className="mr-3">
+                      <img
+                        src={`${UrlImage + receiver.image}`}
+                        width={54}
+                        alt="User"
+                      />
+                    </div>
+                    <div className="send py-3 px-4">{item.message}</div>
+                    <p
+                      className={`date-send ml-3 ${
+                        showContactInfo && "d-none"
+                      }`}
+                    >
+                      {item.time}
+                    </p>
+                  </div>
+                ) : (
+                  ""
+                )
+              )}
+            </div>
+            <div className="message w-100 py-4 px-5 d-flex justify-content-center align-items-center">
+              {showAttach && <Attach></Attach>}
+              <div className="input w-100">
+                <input
+                  type="text"
+                  name="message"
+                  className="form-control"
+                  placeholder="Type your message..."
+                  value={keyword}
+                  onChange={handleMessageChange}
+                  onKeyUp={handleMessageChange}
+                  autoFocus
+                />
+                <Feature
+                  attach={handleClickAttach}
+                  soon={handleClickSoon}
+                ></Feature>
+              </div>
+            </div>
+          </Col>
+        )}
         <ContactInfo
+          image={`${receiver.image !== undefined && UrlImage + receiver.image}`}
+          name={receiver.name}
+          username={receiver.username}
+          phone={receiver.phoneNumber}
           showInfo={showContactInfo}
           info={infoCategory}
           changeInfo={handleClickInfoCategory}
           back={handleClickBackInfo}
         ></ContactInfo>
+        {infoMobile && (
+          <ContactInfoMobile
+            image={`${
+              receiver.image !== undefined && UrlImage + receiver.image
+            }`}
+            name={receiver.name}
+            username={receiver.username}
+            phone={receiver.phoneNumber}
+            showInfo={true}
+            info={infoCategory}
+            changeInfo={handleClickInfoCategory}
+            back={handleClickBackInfoMobile}
+          ></ContactInfoMobile>
+        )}
         <div
           className="modal fade"
           id="exampleModal"

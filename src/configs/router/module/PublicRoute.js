@@ -8,7 +8,7 @@ function PublicRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        isLogin ? history.goBack() : <Component {...props} />
+        isLogin ? history.push("/chat") : <Component {...props} />
       }
     />
   );
