@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import axiosApiInstance from "../../helpers/axios";
 
 import UnionBlack from "../../assets/img/union-black.png";
 import Lock from "../../assets/img/lock.png";
@@ -8,8 +9,12 @@ import Chart from "../../assets/img/data.png";
 import ChatSetting from "../../assets/img/chat-setting.png";
 import Device from "../../assets/img/device.png";
 
-export default function Settings() {
+export default function Settings(props) {
   const history = useHistory();
+
+  const Url = process.env.REACT_APP_API_URL;
+
+  const socket = props.socket;
 
   const handleClickLogout = () => {
     Swal.fire({
@@ -24,19 +29,33 @@ export default function Settings() {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.clear();
-        Swal.fire({
-          title: "Logout",
-          text: "Successfully.",
-          icon: "success",
-          confirmButtonColor: "#7E98DF",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            history.push("/");
-          } else {
-            history.push("/");
-          }
-        });
+        axiosApiInstance
+          .delete(`${Url}/users/socket/${localStorage.getItem("id")}`)
+          .then((res) => {
+            socket.emit("initialLogout", localStorage.getItem("id"));
+            localStorage.clear();
+            Swal.fire({
+              title: "Logout",
+              text: "Successfully.",
+              icon: "success",
+              confirmButtonColor: "#7E98DF",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                history.push("/");
+              } else {
+                history.push("/");
+              }
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "Error!",
+              text: err.message,
+              icon: "error",
+              confirmButtonText: "Ok",
+              confirmButtonColor: "#7E98DF",
+            });
+          });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
           title: "Logout",

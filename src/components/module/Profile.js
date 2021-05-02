@@ -42,7 +42,7 @@ export default function Profile(props) {
       <div className="detail d-flex flex-column mt-4">
         <p>{props.bio}</p>
         <span>Bio</span>
-        <Settings></Settings>
+        <Settings socket={props.socket}></Settings>
       </div>
     </div>
   );

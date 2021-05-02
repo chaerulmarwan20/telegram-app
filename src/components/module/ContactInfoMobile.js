@@ -43,7 +43,7 @@ export default function ContactInfoMobile(props) {
       <div className="detail-info d-flex justify-content-between mt-4">
         <div className="d-flex flex-column">
           <h2>{props.name}</h2>
-          <p>Online</p>
+          <p>{props.status ? "Online" : "Offline"}</p>
         </div>
         <div>
           <img src={ChatBlue} width={22} alt="Chat" />

@@ -386,6 +386,44 @@ export default function Chat(props) {
   }, [socket]);
 
   useEffect(() => {
+    if (socket) {
+      socket.on("login", (data) => {
+        dispatch(getUser())
+          .then((res) => {
+            setEmpty(false);
+          })
+          .catch((err) => {
+            setEmpty(true);
+          });
+        if (idFriend !== null) {
+          dispatch(getReceiver(idFriend))
+            .then((res) => {})
+            .catch((err) => {});
+        }
+      });
+    }
+  }, [socket, dispatch, idFriend]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("logout", (data) => {
+        dispatch(getUser())
+          .then((res) => {
+            setEmpty(false);
+          })
+          .catch((err) => {
+            setEmpty(true);
+          });
+        if (idFriend !== null) {
+          dispatch(getReceiver(idFriend))
+            .then((res) => {})
+            .catch((err) => {});
+        }
+      });
+    }
+  }, [socket, dispatch, idFriend]);
+
+  useEffect(() => {
     dispatch(getUser())
       .then((res) => {
         setEmpty(false);
@@ -456,12 +494,14 @@ export default function Chat(props) {
                               alt="Theresa"
                             />
                           )}
-                          <img
-                            src={Online}
-                            width={20}
-                            alt="Online"
-                            className="online"
-                          />
+                          {item.userSocket && (
+                            <img
+                              src={Online}
+                              width={20}
+                              alt="Online"
+                              className="online"
+                            />
+                          )}
                         </div>
                         <div className="info d-flex flex-column ml-3">
                           <span className="name">
@@ -499,6 +539,7 @@ export default function Chat(props) {
                 phone={user.phoneNumber}
                 bio={user.bio}
                 name={user.name}
+                socket={socket}
               ></Profile>
             </>
           )}
@@ -557,12 +598,14 @@ export default function Chat(props) {
                                 alt="Theresa"
                               />
                             )}
-                            <img
-                              src={Online}
-                              width={20}
-                              alt="Online"
-                              className="online"
-                            />
+                            {item.userSocket && (
+                              <img
+                                src={Online}
+                                width={20}
+                                alt="Online"
+                                className="online"
+                              />
+                            )}
                           </div>
                           <div className="info d-flex flex-column ml-3">
                             <span className="name">
@@ -600,6 +643,7 @@ export default function Chat(props) {
                   phone={user.phoneNumber}
                   bio={user.bio}
                   name={user.name}
+                  socket={socket}
                 ></Profile>
               </>
             )}
@@ -625,6 +669,7 @@ export default function Chat(props) {
                     receiver.image !== undefined && UrlImage + receiver.image
                   }`}
                   name={receiver.name}
+                  status={receiver.userSocket}
                   contactInfo={handleClickContactInfo}
                 ></ProfileMenuComp>
                 <Button type="button" onClick={() => handleClickChatMenu()}>
@@ -727,6 +772,7 @@ export default function Chat(props) {
                   receiver.image !== undefined && UrlImage + receiver.image
                 }`}
                 name={receiver.name}
+                status={receiver.userSocket}
                 contactInfo={handleClickContactInfoMobile}
                 back={handleClickBackMobile}
               ></ProfileMenuComp>
@@ -814,6 +860,7 @@ export default function Chat(props) {
           name={receiver.name}
           username={receiver.username}
           phone={receiver.phoneNumber}
+          status={receiver.userSocket}
           showInfo={showContactInfo}
           info={infoCategory}
           changeInfo={handleClickInfoCategory}
@@ -829,6 +876,7 @@ export default function Chat(props) {
             phone={receiver.phoneNumber}
             showInfo={true}
             info={infoCategory}
+            status={receiver.userSocket}
             changeInfo={handleClickInfoCategory}
             back={handleClickBackInfoMobile}
           ></ContactInfoMobile>

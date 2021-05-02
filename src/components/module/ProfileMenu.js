@@ -28,7 +28,9 @@ export default function ProfileMenu(props) {
         onClick={props.contactInfo}
       >
         <span className="name">{props.name}</span>
-        <span className="status mt-1">Online</span>
+        <span className="status mt-1">
+          {props.status ? "Online" : "Offline"}
+        </span>
       </div>
     </div>
   );
