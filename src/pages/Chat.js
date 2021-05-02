@@ -289,7 +289,6 @@ export default function Chat(props) {
         senderId: localStorage.getItem("id"),
       },
       (data) => {
-        console.log("callback", data);
         setMessages(data);
       }
     );
@@ -399,6 +398,10 @@ export default function Chat(props) {
           dispatch(getReceiver(idFriend))
             .then((res) => {})
             .catch((err) => {});
+        } else {
+          dispatch(getReceiver(data))
+            .then((res) => {})
+            .catch((err) => {});
         }
       });
     }
@@ -416,6 +419,10 @@ export default function Chat(props) {
           });
         if (idFriend !== null) {
           dispatch(getReceiver(idFriend))
+            .then((res) => {})
+            .catch((err) => {});
+        } else {
+          dispatch(getReceiver(data))
             .then((res) => {})
             .catch((err) => {});
         }
