@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Helmet, HelmetProvider } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { activate, reset } from "../configs/redux/actions/user";
 
+import Title from "../components/module/Title";
 import Container from "../components/module/Container";
 import Row from "../components/module/Row";
 import Col from "../components/module/Col";
@@ -140,94 +140,89 @@ export default function ForgotPassword() {
   }, [email, token]);
 
   return (
-    <HelmetProvider>
-      <section className="auth py-5">
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>Telegram App - Forgot Password</title>
-        </Helmet>
-        <Container>
-          <Row>
-            <Col className="col-12 d-flex justify-content-center align-items-center">
-              <div className="card forgot p-5">
-                <img
-                  src={Back}
-                  alt="Back"
-                  width={10}
-                  className="back"
-                  onClick={() => {
-                    handleClickBack();
-                  }}
-                />
-                <h1 className="text-center forgot">Forgot Password</h1>
-                <p className="mt-1 mb-4">
-                  {`${
-                    showPassword === false
-                      ? "You’ll get messages soon on your e-mail"
-                      : "You will have to enter your new password twice"
-                  }`}
-                </p>
-                <form>
-                  {showPassword === false && (
+    <section className="auth py-5">
+      <Title title="Forgot Password"></Title>
+      <Container>
+        <Row>
+          <Col className="col-12 d-flex justify-content-center align-items-center">
+            <div className="card forgot p-5">
+              <img
+                src={Back}
+                alt="Back"
+                width={10}
+                className="back"
+                onClick={() => {
+                  handleClickBack();
+                }}
+              />
+              <h1 className="text-center forgot">Forgot Password</h1>
+              <p className="mt-1 mb-4">
+                {`${
+                  showPassword === false
+                    ? "You’ll get messages soon on your e-mail"
+                    : "You will have to enter your new password twice"
+                }`}
+              </p>
+              <form>
+                {showPassword === false && (
+                  <Input
+                    type="text"
+                    name="email"
+                    placeholder="Enter your e-mail"
+                    label="Email"
+                    value={dataEmail.email}
+                    onChange={handleChangeEmail}
+                    isFormGroup
+                  />
+                )}
+                {showPassword && (
+                  <>
                     <Input
-                      type="text"
-                      name="email"
-                      placeholder="Enter your e-mail"
-                      label="Email"
-                      value={dataEmail.email}
-                      onChange={handleChangeEmail}
+                      type={type}
+                      name="password"
+                      placeholder="Enter your password"
+                      label="Password"
+                      value={data.password}
+                      onChange={handleFormChange}
+                      classFormGroup="password"
+                      alt="Eye"
+                      classImg="eye-img"
+                      onClick={handleToggle}
+                      img={Eye}
                       isFormGroup
                     />
-                  )}
-                  {showPassword && (
-                    <>
-                      <Input
-                        type={type}
-                        name="password"
-                        placeholder="Enter your password"
-                        label="Password"
-                        value={data.password}
-                        onChange={handleFormChange}
-                        classFormGroup="password"
-                        alt="Eye"
-                        classImg="eye-img"
-                        onClick={handleToggle}
-                        img={Eye}
-                        isFormGroup
-                      />
-                      <Input
-                        type={typeConfirm}
-                        name="confirmPassword"
-                        placeholder="Repeat your new password"
-                        label="Confirm Password"
-                        value={data.confirmPassword}
-                        onChange={handleFormChange}
-                        classFormGroup="password"
-                        alt="Eye"
-                        classImg="eye-img"
-                        onClick={handleToggleConfirm}
-                        img={Eye}
-                        isFormGroup
-                      />
-                    </>
-                  )}
-                </form>
-                <Button
-                  type="button"
-                  className="btn-auth mt-4"
-                  onClick={showPassword === false ? handleSend : handleReset}
-                >
-                  {showPassword === false
-                    ? !loading
-                      ? "Send"
-                      : "Please wait..."
-                    : "Reset Now"}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </HelmetProvider>
+                    <Input
+                      type={typeConfirm}
+                      name="confirmPassword"
+                      placeholder="Repeat your new password"
+                      label="Confirm Password"
+                      value={data.confirmPassword}
+                      onChange={handleFormChange}
+                      classFormGroup="password"
+                      alt="Eye"
+                      classImg="eye-img"
+                      onClick={handleToggleConfirm}
+                      img={Eye}
+                      isFormGroup
+                    />
+                  </>
+                )}
+              </form>
+              <Button
+                type="button"
+                className="btn-auth mt-4"
+                onClick={showPassword === false ? handleSend : handleReset}
+              >
+                {showPassword === false
+                  ? !loading
+                    ? "Send"
+                    : "Please wait..."
+                  : "Reset Now"}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </section>
   );
 }

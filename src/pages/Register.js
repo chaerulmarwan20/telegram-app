@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { signUp, verify } from "../configs/redux/actions/user";
 
+import Title from "../components/module/Title";
 import Container from "../components/module/Container";
 import Row from "../components/module/Row";
 import Col from "../components/module/Col";
@@ -115,124 +115,117 @@ export default function Register() {
   }, [dispatch, email, token]);
 
   return (
-    <HelmetProvider>
-      <section className="auth py-5">
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>Telegram App - Register</title>
-        </Helmet>
-        <Container>
-          <Row>
-            <Col className="col-12 d-flex justify-content-center align-items-center">
-              <div className="card p-5">
-                <img
-                  src={Back}
-                  alt="Back"
-                  width={10}
-                  className="back"
-                  onClick={() => {
-                    handleClickBack();
-                  }}
+    <section className="auth py-5">
+      <Title title="Register"></Title>
+      <Container>
+        <Row>
+          <Col className="col-12 d-flex justify-content-center align-items-center">
+            <div className="card p-5">
+              <img
+                src={Back}
+                alt="Back"
+                width={10}
+                className="back"
+                onClick={() => {
+                  handleClickBack();
+                }}
+              />
+              <h1 className="text-center register">Register</h1>
+              <p className="mt-1 mb-4">Let’s create your account!</p>
+              <form onSubmit={formik.handleSubmit}>
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your name"
+                  label="Name"
+                  classFormGroup={`${
+                    formik.errors.name && formik.touched.name && "mb-0"
+                  }`}
+                  classInput={`${
+                    formik.errors.name && formik.touched.name && "error"
+                  }`}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  isFormGroup
                 />
-                <h1 className="text-center register">Register</h1>
-                <p className="mt-1 mb-4">Let’s create your account!</p>
-                <form onSubmit={formik.handleSubmit}>
+                {formik.errors.name && formik.touched.name && (
+                  <small className="error">{formik.errors.name}</small>
+                )}
+                <Input
+                  type="text"
+                  name="email"
+                  placeholder="Enter your e-mail"
+                  label="Email"
+                  classFormGroup={`${
+                    formik.errors.email && formik.touched.email && "mb-0"
+                  }`}
+                  classInput={`${
+                    formik.errors.email && formik.touched.email && "error"
+                  }`}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  isFormGroup
+                />
+                {formik.errors.email && formik.touched.email && (
+                  <small className="error">{formik.errors.email}</small>
+                )}
+                <div
+                  className={`form-group password ${
+                    formik.errors.password && formik.touched.password && "mb-0"
+                  }`}
+                >
+                  <label htmlFor="password">Password</label>
                   <Input
-                    type="text"
-                    name="name"
-                    placeholder="Enter your name"
-                    label="Name"
-                    classFormGroup={`${
-                      formik.errors.name && formik.touched.name && "mb-0"
-                    }`}
+                    type={type}
+                    name="password"
+                    placeholder="Enter your password"
                     classInput={`${
-                      formik.errors.name && formik.touched.name && "error"
-                    }`}
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    isFormGroup
-                  />
-                  {formik.errors.name && formik.touched.name && (
-                    <small className="error">{formik.errors.name}</small>
-                  )}
-                  <Input
-                    type="text"
-                    name="email"
-                    placeholder="Enter your e-mail"
-                    label="Email"
-                    classFormGroup={`${
-                      formik.errors.email && formik.touched.email && "mb-0"
-                    }`}
-                    classInput={`${
-                      formik.errors.email && formik.touched.email && "error"
-                    }`}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    isFormGroup
-                  />
-                  {formik.errors.email && formik.touched.email && (
-                    <small className="error">{formik.errors.email}</small>
-                  )}
-                  <div
-                    className={`form-group password ${
                       formik.errors.password &&
                       formik.touched.password &&
-                      "mb-0"
+                      "error"
                     }`}
-                  >
-                    <label htmlFor="password">Password</label>
-                    <Input
-                      type={type}
-                      name="password"
-                      placeholder="Enter your password"
-                      classInput={`${
-                        formik.errors.password &&
-                        formik.touched.password &&
-                        "error"
-                      }`}
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                    />
-                    <img
-                      src={Eye}
-                      width={24}
-                      height={24}
-                      alt="Eye"
-                      className="eye-img"
-                      onClick={handleToggle}
-                    />
-                  </div>
-                  {formik.errors.password && formik.touched.password && (
-                    <small className="error">{formik.errors.password}</small>
-                  )}
-                  <Button type="submit" className="btn-auth btn-block mt-4">
-                    {!loading ? "Register" : "Please wait..."}
-                  </Button>
-                </form>
-                <Row className="mt-4">
-                  <Col className="col-3 col-md-4">
-                    <hr />
-                  </Col>
-                  <Col className="col-6 col-md-4">
-                    <p className="with-register text-center">Register with</p>
-                  </Col>
-                  <Col className="col-3 col-md-4">
-                    <hr />
-                  </Col>
-                </Row>
-                <Button
-                  type="button"
-                  className="btn-google d-flex justify-content-center align-items-center mt-4"
-                  onClick={() => handleClickGoogle()}
-                >
-                  <img src={Google} width={24} height={24} alt="Google" />
-                  <span className="ml-2">Register</span>
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                  />
+                  <img
+                    src={Eye}
+                    width={24}
+                    height={24}
+                    alt="Eye"
+                    className="eye-img"
+                    onClick={handleToggle}
+                  />
+                </div>
+                {formik.errors.password && formik.touched.password && (
+                  <small className="error">{formik.errors.password}</small>
+                )}
+                <Button type="submit" className="btn-auth btn-block mt-4">
+                  {!loading ? "Register" : "Please wait..."}
                 </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </HelmetProvider>
+              </form>
+              <Row className="mt-4">
+                <Col className="col-3 col-md-4">
+                  <hr />
+                </Col>
+                <Col className="col-6 col-md-4">
+                  <p className="with-register text-center">Register with</p>
+                </Col>
+                <Col className="col-3 col-md-4">
+                  <hr />
+                </Col>
+              </Row>
+              <Button
+                type="button"
+                className="btn-google d-flex justify-content-center align-items-center mt-4"
+                onClick={() => handleClickGoogle()}
+              >
+                <img src={Google} width={24} height={24} alt="Google" />
+                <span className="ml-2">Register</span>
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </section>
   );
 }
