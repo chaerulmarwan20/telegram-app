@@ -44,6 +44,8 @@ export default function Chat(props) {
 
   const imageRef = useRef(null);
 
+  const notify = () => toast("You have new message!");
+
   const { user, userTarget, receiver } = useSelector((state) => state.user);
 
   const [data, setData] = useState({
@@ -294,10 +296,10 @@ export default function Chat(props) {
     );
   };
 
-  const handleClickDelete = () => {
+  const handleClickDelete = (idSender, idTarget, idMessage) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You will delete chat history!",
+      text: "You will delete this message!",
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Yes, delete!",
@@ -307,15 +309,11 @@ export default function Chat(props) {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteMessages(localStorage.getItem("id"), idFriend))
+        dispatch(deleteMessages(idSender, idTarget, idMessage))
           .then((res) => {
-            setShowChat(false);
-            setShowChatMenu(false);
-            setChatingMobile(false);
-            setChatMobile(true);
             Swal.fire({
-              title: "Delete chat history",
-              text: "Successfully.",
+              title: "Success",
+              text: res,
               icon: "success",
               confirmButtonColor: "#7E98DF",
             });
@@ -331,8 +329,8 @@ export default function Chat(props) {
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
-          title: "Delete chat history",
-          text: "Cancelled :)",
+          title: "Info",
+          text: "Delete message cancelled :)",
           icon: "info",
           confirmButtonColor: "#7E98DF",
         });
@@ -371,7 +369,6 @@ export default function Chat(props) {
   useEffect(() => {
     if (socket) {
       socket.on("recMessage", (data) => {
-        const notify = () => toast("You have new message!");
         notify();
         setMessages(data);
       });
@@ -682,9 +679,7 @@ export default function Chat(props) {
                 <Button type="button" onClick={() => handleClickChatMenu()}>
                   <img src={ProfileMenu} width={20} alt="Profile Menu" />
                 </Button>
-                {showChatMenu && (
-                  <ChatMenu delete={handleClickDelete}></ChatMenu>
-                )}
+                {showChatMenu && <ChatMenu></ChatMenu>}
               </div>
               <div className="chating d-flex flex-column h-100 pb-4 px-5">
                 {messages.map((item, index) =>
@@ -702,7 +697,21 @@ export default function Chat(props) {
                       >
                         {item.time}
                       </p>
-                      <div className="reply py-3 px-4">{item.message}</div>
+                      <div
+                        className="reply py-3 px-4"
+                        style={{ cursor: "pointer" }}
+                        onClick={
+                          item.message !== "Pesan ini telah dihapus" &&
+                          (() =>
+                            handleClickDelete(
+                              item.senderId,
+                              item.targetId,
+                              item.id
+                            ))
+                        }
+                      >
+                        {item.message}
+                      </div>
                       <div className="ml-3">
                         <img
                           src={`${UrlImage + user.image}`}
@@ -725,7 +734,12 @@ export default function Chat(props) {
                           alt="User"
                         />
                       </div>
-                      <div className="send py-3 px-4">{item.message}</div>
+                      <div
+                        className="send py-3 px-4"
+                        style={{ cursor: "pointer" }}
+                      >
+                        {item.message}
+                      </div>
                       <p
                         className={`date-send ml-3 ${
                           showContactInfo && "d-none"
@@ -786,7 +800,7 @@ export default function Chat(props) {
               <Button type="button" onClick={() => handleClickChatMenu()}>
                 <img src={ProfileMenu} width={20} alt="Profile Menu" />
               </Button>
-              {showChatMenu && <ChatMenu delete={handleClickDelete}></ChatMenu>}
+              {showChatMenu && <ChatMenu></ChatMenu>}
             </div>
             <div className="chating mobile d-flex flex-column h-100 pb-4 px-5 w-100">
               {messages.map((item, index) =>
@@ -804,7 +818,21 @@ export default function Chat(props) {
                     >
                       {item.time}
                     </p>
-                    <div className="reply py-3 px-4">{item.message}</div>
+                    <div
+                      className="reply py-3 px-4"
+                      style={{ cursor: "pointer" }}
+                      onClick={
+                        item.message !== "Pesan ini telah dihapus" &&
+                        (() =>
+                          handleClickDelete(
+                            item.senderId,
+                            item.targetId,
+                            item.id
+                          ))
+                      }
+                    >
+                      {item.message}
+                    </div>
                     <div className="ml-3">
                       <img
                         src={`${UrlImage + user.image}`}
@@ -827,7 +855,12 @@ export default function Chat(props) {
                         alt="User"
                       />
                     </div>
-                    <div className="send py-3 px-4">{item.message}</div>
+                    <div
+                      className="send py-3 px-4"
+                      style={{ cursor: "pointer" }}
+                    >
+                      {item.message}
+                    </div>
                     <p
                       className={`date-send ml-3 ${
                         showContactInfo && "d-none"

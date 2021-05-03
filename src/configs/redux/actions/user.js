@@ -212,11 +212,11 @@ export const getMessages = (idSender, idReceiver) => (dispatch) => {
   });
 };
 
-export const deleteMessages = (idSender, idReceiver) => (dispatch) => {
+export const deleteMessages = (idSender, idTarget, idMessage) => (dispatch) => {
   return new Promise((resolve, reject) => {
     const Url = process.env.REACT_APP_API_URL;
     axiosApiInstance
-      .delete(`${Url}/users/messages/${idSender}/${idReceiver}`)
+      .delete(`${Url}/users/messages/${idSender}/${idTarget}/${idMessage}`)
       .then((res) => {
         resolve(res.data.message);
       })
