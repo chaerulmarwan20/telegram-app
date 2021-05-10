@@ -90,6 +90,7 @@ Your account profile
 
 ### # FINISH
 
-## Link:
+## VISIT PROJECT !!!
 
-- [Backend](https://github.com/chaerulmarwan20/telegram-app-backend)
+- :white_check_mark: [Backend](https://github.com/chaerulmarwan20/telegram-app-backend)
+- :rocket: [My Telegram](https://chatting-telegram.netlify.app/)
