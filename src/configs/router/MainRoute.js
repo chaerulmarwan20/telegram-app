@@ -12,9 +12,9 @@ import Chat from "../../pages/Chat";
 
 function App() {
   const [socket, setSocket] = useState(null);
-
+  const Url = process.env.REACT_APP_API_IMG;
   const setupSocket = () => {
-    const newSocket = io("http://localhost:8080");
+    const newSocket = io(`${Url}`);
     setSocket(newSocket);
   };
 
