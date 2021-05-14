@@ -106,7 +106,7 @@ export const update = (data) => (dispatch) => {
   });
 };
 
-export const activate = ({ email }) => (dispatch) => {
+export const activate = (email) => (dispatch) => {
   return new Promise((resolve, reject) => {
     const Url = process.env.REACT_APP_API_URL;
     dispatch(resetRequest());

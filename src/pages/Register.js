@@ -100,6 +100,12 @@ export default function Register() {
             icon: "success",
             confirmButtonText: "Ok",
             confirmButtonColor: "#7E98DF",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              history.push("/");
+            } else {
+              history.push("/");
+            }
           });
         })
         .catch((err) => {
@@ -112,7 +118,7 @@ export default function Register() {
           });
         });
     }
-  }, [dispatch, email, token]);
+  }, [dispatch, email, token, history]);
 
   return (
     <section className="auth py-5">

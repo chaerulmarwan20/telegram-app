@@ -44,7 +44,7 @@ export default function Chat(props) {
 
   const imageRef = useRef(null);
 
-  const notify = () => toast("You have new message!");
+  const notify = (params) => toast(`You have new message from ${params}!`);
 
   const { user, userTarget, receiver } = useSelector((state) => state.user);
 
@@ -311,8 +311,9 @@ export default function Chat(props) {
       if (result.isConfirmed) {
         dispatch(deleteMessages(idSender, idTarget, idMessage))
           .then((res) => {
+            socket.emit("delMessage", idSender, idTarget);
             Swal.fire({
-              title: "Success",
+              title: "Success!",
               text: res,
               icon: "success",
               confirmButtonColor: "#7E98DF",
@@ -329,7 +330,7 @@ export default function Chat(props) {
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
-          title: "Info",
+          title: "Info!",
           text: "Delete message cancelled :)",
           icon: "info",
           confirmButtonColor: "#7E98DF",
@@ -368,12 +369,48 @@ export default function Chat(props) {
 
   useEffect(() => {
     if (socket) {
-      socket.on("recMessage", (data) => {
-        notify();
+      socket.on("recMessage", (data, senderName) => {
+        notify(senderName[0].name);
         setMessages(data);
       });
     }
   }, [socket]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("delete", (idSender, idTarget) => {
+        if (idSender === Number(localStorage.getItem("id"))) {
+          dispatch(getMessages(idSender, idTarget))
+            .then((res) => {
+              setMessages(res);
+            })
+            .catch((err) => {
+              Swal.fire({
+                title: "Error!",
+                text: err.message,
+                icon: "error",
+                confirmButtonText: "Ok",
+                confirmButtonColor: "#7E98DF",
+              });
+            });
+        } else if (idTarget === Number(localStorage.getItem("id"))) {
+          dispatch(getMessages(idSender, idTarget))
+            .then((res) => {
+              setMessages(res);
+            })
+            .catch((err) => {
+              Swal.fire({
+                title: "Error!",
+                text: err.message,
+                icon: "error",
+                confirmButtonText: "Ok",
+                confirmButtonColor: "#7E98DF",
+              });
+            });
+        }
+      });
+    }
+  }, [socket, dispatch]);
 
   useEffect(() => {
     if (socket) {

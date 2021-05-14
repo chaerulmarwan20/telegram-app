@@ -165,7 +165,7 @@ section.chat .create-channel {
 
 section.chat .create-channel div {
   cursor: pointer;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
 }
 
 section.chat .create-channel div:hover {
@@ -193,7 +193,7 @@ section.chat .header .detail-menu a {
   line-height: 19px;
   letter-spacing: -0.165px;
   color: #ffffff;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
 }
 
 section.chat .header .detail-menu a:hover {
@@ -222,7 +222,7 @@ section.chat .profile-menu .chat-menu a {
   letter-spacing: -0.165px;
   color: #ffffff;
   text-decoration: none;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
 }
 
 section.chat .profile-menu .chat-menu a:hover {
@@ -330,7 +330,7 @@ section.chat .right .message .attach a {
   line-height: 189.93%;
   letter-spacing: -0.165px;
   color: #ffffff;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
   text-decoration: none;
 }
 
@@ -518,7 +518,7 @@ section.chat .profile .account a {
   line-height: 19px;
   letter-spacing: -0.17px;
   color: #7e98df;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
   text-decoration: none;
 }
 
@@ -571,7 +571,7 @@ section.chat .profile .detail a {
   line-height: 20px;
   color: #232323;
   text-decoration: none;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
   margin-top: 30px;
 }
 
@@ -591,7 +591,7 @@ section.chat .btn-changes {
   line-height: 19px;
   text-align: center;
   color: #ffffff;
-  transition: 0.5 ease;
+  transition: 0.5s ease;
 }
 
 section.chat .btn-changes:hover {
@@ -629,4 +629,13 @@ section.chat .img-wrapper .file-input {
   opacity: 0;
   left: 188px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 991px) {
+  section.chat .btn-changes:hover {
+    background-color: #7e98df;
+    color: #ffffff;
+    border: 1px solid transparent;
+    opacity: 0.6;
+  }
 }

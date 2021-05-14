@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { login } from "../configs/redux/actions/user";
 
@@ -20,9 +22,46 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const [type, setType] = useState("password");
-  const [data, setData] = useState({
-    email: "",
-    password: "",
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email format").required("Required!"),
+      password: Yup.string()
+        .min(8, "Minimum 8 characters")
+        .required("Required!"),
+    }),
+    onSubmit: (values) => {
+      dispatch(login(values))
+        .then((res) => {
+          formik.resetForm();
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              history.push("/chat");
+            } else {
+              history.push("/chat");
+            }
+          });
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "Error!",
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        });
+    },
   });
 
   const handleToggle = () => {
@@ -31,45 +70,6 @@ export default function Login() {
     } else {
       setType("text");
     }
-  };
-
-  const handleFormChange = (event) => {
-    const dataNew = { ...data };
-    dataNew[event.target.name] = event.target.value;
-    setData(dataNew);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(login(data))
-      .then((res) => {
-        setData({
-          email: "",
-          password: "",
-        });
-        Swal.fire({
-          title: "Success!",
-          text: res,
-          icon: "success",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            history.push("/chat");
-          } else {
-            history.push("/chat");
-          }
-        });
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error!",
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      });
   };
 
   const handleClickGoogle = () => {
@@ -90,41 +90,65 @@ export default function Login() {
             <div className="card p-5">
               <h1 className="text-center">Login</h1>
               <p className="my-4">Hi, Welcome back!</p>
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <Input
                   type="text"
                   name="email"
                   placeholder="Enter your e-mail"
                   label="Email"
-                  value={data.email}
-                  onChange={handleFormChange}
+                  classFormGroup={`${
+                    formik.errors.email && formik.touched.email && "mb-0"
+                  }`}
+                  classInput={`${
+                    formik.errors.email && formik.touched.email && "error"
+                  }`}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
                   isFormGroup
                 />
-                <Input
-                  type={type}
-                  name="password"
-                  placeholder="Enter your password"
-                  label="Password"
-                  value={data.password}
-                  onChange={handleFormChange}
-                  classFormGroup="password"
-                  alt="Eye"
-                  classImg="eye-img"
-                  onClick={handleToggle}
-                  img={Eye}
-                  isFormGroup
-                />
+                {formik.errors.email && formik.touched.email && (
+                  <small className="error">{formik.errors.email}</small>
+                )}
+                <div
+                  className={`form-group password ${
+                    formik.errors.password && formik.touched.password && "mb-0"
+                  }`}
+                >
+                  <label htmlFor="password">Password</label>
+                  <Input
+                    type={type}
+                    name="password"
+                    placeholder="Enter your password"
+                    classInput={`${
+                      formik.errors.password &&
+                      formik.touched.password &&
+                      "error"
+                    }`}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                  />
+                  <img
+                    src={Eye}
+                    width={24}
+                    height={24}
+                    alt="Eye"
+                    className="eye-img"
+                    onClick={handleToggle}
+                  />
+                </div>
+                {formik.errors.password && formik.touched.password && (
+                  <small className="error">{formik.errors.password}</small>
+                )}
+                <Link
+                  to="/forgot-password"
+                  className="forgot float-right mb-4 mt-2"
+                >
+                  Forgot password?
+                </Link>
+                <Button type="submit" className="btn-auth btn-block mt-5">
+                  Login
+                </Button>
               </form>
-              <Link to="/forgot-password" className="forgot text-right my-4">
-                Forgot password?
-              </Link>
-              <Button
-                type="button"
-                className="btn-auth mt-2"
-                onClick={handleSubmit}
-              >
-                Login
-              </Button>
               <Row className="mt-4">
                 <Col className="col-4">
                   <hr />

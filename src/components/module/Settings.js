@@ -36,7 +36,7 @@ export default function Settings(props) {
             localStorage.clear();
             Swal.fire({
               title: "Logout",
-              text: "Successfully.",
+              text: "Successfully",
               icon: "success",
               confirmButtonColor: "#7E98DF",
             }).then((result) => {

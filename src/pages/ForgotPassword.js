@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { activate, reset } from "../configs/redux/actions/user";
 
@@ -31,28 +33,97 @@ export default function ForgotPassword() {
   const [type, setType] = useState("password");
   const [typeConfirm, setTypeConfirm] = useState("password");
   const [showPassword, setShowPassword] = useState(false);
-  const [dataEmail, setDataEmail] = useState({
-    email: "",
-  });
-  const [data, setData] = useState({
-    password: "",
-    confirmPassword: "",
+
+  let validate;
+
+  if (showPassword) {
+    validate = {
+      password: Yup.string()
+        .min(8, "Minimum 8 characters")
+        .required("Required!"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], "Password do not match")
+        .required("Required!"),
+    };
+  } else {
+    validate = {
+      email: Yup.string().email("Invalid email format").required("Required!"),
+    };
+  }
+
+  const action = (params) => {
+    const data = {
+      password: params.password,
+      confirmPassword: params.confirmPassword,
+    };
+    if (showPassword) {
+      dispatch(reset(email, token, data))
+        .then((res) => {
+          formik.resetForm();
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              history.push("/");
+            } else {
+              history.push("/");
+            }
+          });
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "Error!",
+            text:
+              err.message === `"confirmPassword" must be [ref:password]`
+                ? "Password do not match"
+                : err.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        });
+    } else {
+      dispatch(activate(params.email))
+        .then((res) => {
+          formik.resetForm();
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "Error!",
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
+        });
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: Yup.object(validate),
+    onSubmit: (values) => {
+      action(values);
+    },
   });
 
   const handleClickBack = () => {
     history.push("/");
-  };
-
-  const handleChangeEmail = (event) => {
-    const emailNew = { ...dataEmail };
-    emailNew[event.target.name] = event.target.value;
-    setDataEmail(emailNew);
-  };
-
-  const handleFormChange = (event) => {
-    const dataNew = { ...data };
-    dataNew[event.target.name] = event.target.value;
-    setData(dataNew);
   };
 
   const handleToggle = () => {
@@ -69,68 +140,6 @@ export default function ForgotPassword() {
     } else {
       setTypeConfirm("text");
     }
-  };
-
-  const handleSend = (event) => {
-    event.preventDefault();
-    dispatch(activate(dataEmail))
-      .then((res) => {
-        setDataEmail({
-          email: "",
-        });
-        Swal.fire({
-          title: "Success!",
-          text: res,
-          icon: "success",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error!",
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      });
-  };
-
-  const handleReset = (event) => {
-    event.preventDefault();
-    dispatch(reset(email, token, data))
-      .then((res) => {
-        setData({
-          password: "",
-          confirmPassword: "",
-        });
-        Swal.fire({
-          title: "Success!",
-          text: res,
-          icon: "success",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            history.push("/");
-          } else {
-            history.push("/");
-          }
-        });
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error!",
-          text:
-            err.message === `"confirmPassword" must be [ref:password]`
-              ? "Password do not match"
-              : err.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      });
   };
 
   useEffect(() => {
@@ -163,62 +172,108 @@ export default function ForgotPassword() {
                     : "You will have to enter your new password twice"
                 }`}
               </p>
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 {showPassword === false && (
-                  <Input
-                    type="text"
-                    name="email"
-                    placeholder="Enter your e-mail"
-                    label="Email"
-                    value={dataEmail.email}
-                    onChange={handleChangeEmail}
-                    isFormGroup
-                  />
+                  <>
+                    <Input
+                      type="text"
+                      name="email"
+                      placeholder="Enter your e-mail"
+                      label="Email"
+                      classFormGroup={`${
+                        formik.errors.email && formik.touched.email && "mb-0"
+                      }`}
+                      classInput={`${
+                        formik.errors.email && formik.touched.email && "error"
+                      }`}
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      isFormGroup
+                    />
+                    {formik.errors.email && formik.touched.email && (
+                      <small className="error">{formik.errors.email}</small>
+                    )}
+                  </>
                 )}
                 {showPassword && (
                   <>
-                    <Input
-                      type={type}
-                      name="password"
-                      placeholder="Enter your password"
-                      label="Password"
-                      value={data.password}
-                      onChange={handleFormChange}
-                      classFormGroup="password"
-                      alt="Eye"
-                      classImg="eye-img"
-                      onClick={handleToggle}
-                      img={Eye}
-                      isFormGroup
-                    />
-                    <Input
-                      type={typeConfirm}
-                      name="confirmPassword"
-                      placeholder="Repeat your new password"
-                      label="Confirm Password"
-                      value={data.confirmPassword}
-                      onChange={handleFormChange}
-                      classFormGroup="password"
-                      alt="Eye"
-                      classImg="eye-img"
-                      onClick={handleToggleConfirm}
-                      img={Eye}
-                      isFormGroup
-                    />
+                    <div
+                      className={`form-group password ${
+                        formik.errors.password &&
+                        formik.touched.password &&
+                        "mb-0"
+                      }`}
+                    >
+                      <label htmlFor="password">Password</label>
+                      <Input
+                        type={type}
+                        name="password"
+                        placeholder="Enter your password"
+                        classInput={`${
+                          formik.errors.password &&
+                          formik.touched.password &&
+                          "error"
+                        }`}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                      />
+                      <img
+                        src={Eye}
+                        width={24}
+                        height={24}
+                        alt="Eye"
+                        className="eye-img"
+                        onClick={handleToggle}
+                      />
+                    </div>
+                    {formik.errors.password && formik.touched.password && (
+                      <small className="error">{formik.errors.password}</small>
+                    )}
+                    <div
+                      className={`form-group password ${
+                        formik.errors.confirmPassword &&
+                        formik.touched.confirmPassword &&
+                        "mb-0"
+                      }`}
+                    >
+                      <label htmlFor="confirmPassword">Confirm Password</label>
+                      <Input
+                        type={type}
+                        name="confirmPassword"
+                        placeholder="Repeat your new password"
+                        classInput={`${
+                          formik.errors.confirmPassword &&
+                          formik.touched.confirmPassword &&
+                          "error"
+                        }`}
+                        value={formik.values.confirmPassword}
+                        onChange={formik.handleChange}
+                      />
+                      <img
+                        src={Eye}
+                        width={24}
+                        height={24}
+                        alt="Eye"
+                        className="eye-img"
+                        onClick={handleToggleConfirm}
+                      />
+                    </div>
+                    {formik.errors.confirmPassword &&
+                      formik.touched.confirmPassword && (
+                        <small className="error">
+                          {formik.errors.confirmPassword}
+                        </small>
+                      )}
                   </>
                 )}
+                <Button type="submit" className="btn-auth btn-block mt-5">
+                  {showPassword === false
+                    ? !loading
+                      ? "Send"
+                      : "Please wait..."
+                    : "Reset Now"}
+                </Button>
               </form>
-              <Button
-                type="button"
-                className="btn-auth mt-4"
-                onClick={showPassword === false ? handleSend : handleReset}
-              >
-                {showPassword === false
-                  ? !loading
-                    ? "Send"
-                    : "Please wait..."
-                  : "Reset Now"}
-              </Button>
             </div>
           </Col>
         </Row>
