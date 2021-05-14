@@ -9,8 +9,8 @@
 - [Features](#features)
 - [Built With](#built-with)
 - [Prerequisites](#prerequisites)
-- [Endpoint](#endpoint)
 - [Installation](#installation)
+- [Screenshots](#screenshots)
 - [Related Project](#related-project)
 
 ## Introduction
