@@ -17,7 +17,7 @@
 
 The Telegram app is a chat application that allows users to send messages to other users in realtime. This application was built for a week with the main tools namely express, mysql, react, and socket.io.
 
-### # FEATURES
+## Features
 
 - Authentication
 
@@ -38,20 +38,6 @@ The Telegram app is a chat application that allows users to send messages to oth
 - [ReactJs](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
 - [Bootstrap](https://getbootstrap.com/)
-- [Socket.io](https://socket.io/)
-
-### # TOOLS
-
-- [ExpressJS](http://expressjs.com/)
-
-- [React](https://reactjs.org/)
-
-- [Bootstrap](https://getbootstrap.com/)
-
-- [Redux](https://redux.js.org/)
-
-- [MySQL](https://www.mysql.com/)
-
 - [Socket.io](https://socket.io/)
 
 ## Installation
