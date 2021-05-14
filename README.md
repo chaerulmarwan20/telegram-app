@@ -9,15 +9,15 @@
 - [Features](#features)
 - [Built With](#built-with)
 - [Prerequisites](#prerequisites)
-- [Endpoint](#endpoint)
 - [Installation](#installation)
+- [Screenshots](#screenshots)
 - [Related Project](#related-project)
 
 ## Introduction
 
 The Telegram app is a chat application that allows users to send messages to other users in realtime. This application was built for a week with the main tools namely express, mysql, react, and socket.io.
 
-### # FEATURES
+## Features
 
 - Authentication
 
@@ -40,19 +40,10 @@ The Telegram app is a chat application that allows users to send messages to oth
 - [Bootstrap](https://getbootstrap.com/)
 - [Socket.io](https://socket.io/)
 
-### # TOOLS
+## Prerequisites
 
-- [ExpressJS](http://expressjs.com/)
-
-- [React](https://reactjs.org/)
-
-- [Bootstrap](https://getbootstrap.com/)
-
-- [Redux](https://redux.js.org/)
-
-- [MySQL](https://www.mysql.com/)
-
-- [Socket.io](https://socket.io/)
+- [NodeJs](https://nodejs.org/en/download/)
+- [Backend Telegram](https://github.com/chaerulmarwan20/telegram-app-backend)
 
 ## Installation
 
