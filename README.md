@@ -40,6 +40,11 @@ The Telegram app is a chat application that allows users to send messages to oth
 - [Bootstrap](https://getbootstrap.com/)
 - [Socket.io](https://socket.io/)
 
+## Prerequisites
+
+- [NodeJs](https://nodejs.org/en/download/)
+- [Backend Telegram](https://github.com/chaerulmarwan20/telegram-app-backend)
+
 ## Installation
 
 1. Open your terminal or command prompt. Then, clone the repo.
