@@ -19,7 +19,15 @@ axiosApiInstance.interceptors.response.use(
   },
   async function (error) {
     if (error.response.status === 401) {
-      localStorage.clear();
+      if (error.response.data.message === "Token is expired") {
+        localStorage.clear();
+      }
+      if (error.response.data.message === "Token is not active") {
+        localStorage.clear();
+      }
+      if (error.response.data.message === "Invalid signature") {
+        localStorage.clear();
+      }
     }
     return Promise.reject(error);
   }

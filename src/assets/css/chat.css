@@ -613,22 +613,55 @@ section.chat .modal-content .modal-body input.form-control {
   padding-left: 20px;
 }
 
+section.chat .modal-content .modal-body input.form-control.error {
+  border: 1px solid #ff0000;
+}
+section.chat .modal-content .modal-body small.error {
+  margin-top: -20px;
+  color: #ff0000;
+}
+
 section.chat .img-user {
   border-radius: 20px;
   cursor: pointer;
 }
 
 section.chat .img-wrapper {
+  width: 82px;
   position: relative;
+}
+
+section.chat .img-wrapper .shadow {
+  position: absolute;
+  top: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 34px;
+  letter-spacing: 0.75px;
+  color: #ffffff;
+  background-color: #7e98df;
+  width: 82px;
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.5s ease;
+}
+
+section.chat .img-wrapper .file-input:hover + .shadow {
+  opacity: 0.6;
 }
 
 section.chat .img-wrapper .file-input {
   position: absolute;
   width: 82px;
   height: 82px;
+  left: 0;
   opacity: 0;
-  left: 188px;
   cursor: pointer;
+  z-index: 9999;
 }
 
 @media screen and (max-width: 991px) {

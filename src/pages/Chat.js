@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { animateScroll as scroll } from "react-scroll";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 import {
   findUser,
   update,
@@ -13,6 +15,8 @@ import {
   getMessages,
   deleteMessages,
 } from "../configs/redux/actions/user";
+
+import "react-toastify/dist/ReactToastify.css";
 
 import Title from "../components/module/Title";
 import Col from "../components/module/Col";
@@ -48,12 +52,6 @@ export default function Chat(props) {
 
   const { user, userTarget, receiver } = useSelector((state) => state.user);
 
-  const [data, setData] = useState({
-    username: "",
-    name: "",
-    phoneNumber: "",
-    bio: "",
-  });
   const [dataImage, setDataImage] = useState({
     image: user.image,
   });
@@ -77,12 +75,6 @@ export default function Chat(props) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [idFriend, setIdFriend] = useState(null);
-
-  const handleFormChange = (event) => {
-    const dataNew = { ...data };
-    dataNew[event.target.name] = event.target.value;
-    setData(dataNew);
-  };
 
   const handleChangeImage = (event) => {
     const imgFiles = event.target.files[0];
@@ -207,37 +199,61 @@ export default function Chat(props) {
     setShowContactInfo(false);
   };
 
-  const handleSaveChanges = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("username", data.username);
-    formData.append("name", data.name);
-    formData.append("phoneNumber", data.phoneNumber);
-    formData.append("bio", data.bio);
-    if (status) {
-      formData.append("image", dataImage.image);
-    }
-    dispatch(update(formData))
-      .then((res) => {
-        dispatch(findUser());
-        Swal.fire({
-          title: "Success!",
-          text: res,
-          icon: "success",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      name: "",
+      phoneNumber: "",
+      bio: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, "Minimum 3 characters")
+        .required("Required!"),
+      name: Yup.string().min(3, "Minimum 3 characters").required("Required!"),
+      phoneNumber: Yup.number()
+        .typeError("Invalid phone number")
+        .positive("A phone number can't start with a minus")
+        .integer("A phone number can't include a decimal point")
+        .required("Required!"),
+      bio: Yup.string().min(3, "Minimum 3 characters").required("Required!"),
+    }),
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.append("username", values.username);
+      formData.append("name", values.name);
+      formData.append("phoneNumber", values.phoneNumber);
+      formData.append("bio", values.bio);
+      if (status) {
+        formData.append("image", dataImage.image);
+      }
+      dispatch(update(formData))
+        .then((res) => {
+          formik.resetForm();
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          }).then(() => {
+            dispatch(findUser()).then((res) => {
+              const result = res;
+              formik.setValues(result);
+            });
+          });
+        })
+        .catch((err) => {
+          Swal.fire({
+            title: "Error!",
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#7E98DF",
+          });
         });
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error!",
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-          confirmButtonColor: "#7E98DF",
-        });
-      });
-  };
+    },
+  });
 
   const handleClickAttach = () => {
     setShowAttach(!showAttach);
@@ -343,12 +359,8 @@ export default function Chat(props) {
     dispatch(findUser())
       .then((res) => {
         setImgUrl(`${UrlImage}${res.image}`);
-        setData({
-          username: res.username,
-          name: res.name,
-          phoneNumber: res.phoneNumber,
-          bio: res.bio,
-        });
+        const result = res;
+        formik.setValues(result);
       })
       .catch((err) => {
         if (
@@ -965,7 +977,7 @@ export default function Chat(props) {
             </div>
             <div className="modal-body">
               <form>
-                <div className="text-center mb-3 img-wrapper">
+                <div className="text-center mb-3 img-wrapper mx-auto">
                   <img
                     src={imgUrl}
                     width={82}
@@ -979,53 +991,99 @@ export default function Chat(props) {
                     ref={imageRef}
                     onChange={(event) => handleChangeImage(event)}
                   />
+                  <div className="shadow">Edit</div>
                 </div>
                 <Input
                   type="text"
                   name="username"
                   placeholder="Write your username"
                   label="Username"
-                  value={`${data.username !== "none" ? data.username : ""}`}
-                  onChange={handleFormChange}
+                  value={
+                    formik.values.username !== "none"
+                      ? formik.values.username
+                      : ""
+                  }
+                  onChange={formik.handleChange}
+                  classFormGroup={`${
+                    formik.errors.username && formik.touched.username && "mb-0"
+                  }`}
+                  classInput={`${
+                    formik.errors.username && formik.touched.username && "error"
+                  }`}
                   isFormGroup
                 />
+                {formik.errors.username && formik.touched.username && (
+                  <small className="error">{formik.errors.username}</small>
+                )}
                 <Input
                   type="text"
                   name="name"
                   placeholder="Write your name"
                   label="Name"
-                  value={data.name}
-                  onChange={handleFormChange}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  classFormGroup={`${
+                    formik.errors.name && formik.touched.name && "mb-0"
+                  }`}
+                  classInput={`${
+                    formik.errors.name && formik.touched.name && "error"
+                  }`}
                   isFormGroup
                 />
+                {formik.errors.name && formik.touched.name && (
+                  <small className="error">{formik.errors.name}</small>
+                )}
                 <Input
                   type="text"
                   name="phoneNumber"
                   placeholder="Write your phone number"
                   label="Phone Number"
-                  value={`${
-                    data.phoneNumber !== "none" ? data.phoneNumber : ""
+                  value={
+                    formik.values.phoneNumber !== "none"
+                      ? formik.values.phoneNumber
+                      : ""
+                  }
+                  onChange={formik.handleChange}
+                  classFormGroup={`${
+                    formik.errors.phoneNumber &&
+                    formik.touched.phoneNumber &&
+                    "mb-0"
                   }`}
-                  onChange={handleFormChange}
+                  classInput={`${
+                    formik.errors.phoneNumber &&
+                    formik.touched.phoneNumber &&
+                    "error"
+                  }`}
                   isFormGroup
                 />
+                {formik.errors.phoneNumber && formik.touched.phoneNumber && (
+                  <small className="error">{formik.errors.phoneNumber}</small>
+                )}
                 <Input
                   type="text"
                   name="bio"
                   placeholder="Write your bio"
                   label="Bio"
-                  value={`${data.bio !== "none" ? data.bio : ""}`}
-                  onChange={handleFormChange}
+                  value={formik.values.bio !== "none" ? formik.values.bio : ""}
+                  onChange={formik.handleChange}
+                  classFormGroup={`${
+                    formik.errors.bio && formik.touched.bio && "mb-0"
+                  }`}
+                  classInput={`${
+                    formik.errors.bio && formik.touched.bio && "error"
+                  }`}
                   isFormGroup
                 />
+                {formik.errors.bio && formik.touched.bio && (
+                  <small className="error">{formik.errors.bio}</small>
+                )}
               </form>
             </div>
             <div className="modal-footer">
               <Button
                 type="button"
                 className="btn-changes"
-                onClick={handleSaveChanges}
-                isModal
+                onClick={formik.handleSubmit}
               >
                 Save changes
               </Button>
