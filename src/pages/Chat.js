@@ -237,10 +237,26 @@ export default function Chat(props) {
             confirmButtonText: "Ok",
             confirmButtonColor: "#7E98DF",
           }).then(() => {
-            dispatch(findUser()).then((res) => {
-              const result = res;
-              formik.setValues(result);
-            });
+            dispatch(findUser())
+              .then((res) => {
+                const result = res;
+                formik.setValues(result);
+              })
+              .catch((err) => {
+                if (
+                  err.message !== "Token is expired" &&
+                  err.message !== "Token is not active" &&
+                  err.message !== "Invalid signature"
+                ) {
+                  Swal.fire({
+                    title: "Error!",
+                    text: err.message,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                    confirmButtonColor: "#7E98DF",
+                  });
+                }
+              });
           });
         })
         .catch((err) => {
