@@ -1096,13 +1096,27 @@ export default function Chat(props) {
               </form>
             </div>
             <div className="modal-footer">
-              <Button
-                type="button"
-                className="btn-changes"
-                onClick={formik.handleSubmit}
-              >
-                Save changes
-              </Button>
+              {formik.errors.username ||
+              formik.errors.name ||
+              formik.errors.phoneNumber ||
+              formik.errors.bio ? (
+                <Button
+                  type="button"
+                  className="btn-changes"
+                  onClick={formik.handleSubmit}
+                >
+                  Save changes
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  className="btn-changes"
+                  onClick={formik.handleSubmit}
+                  isModal
+                >
+                  Save changes
+                </Button>
+              )}
             </div>
           </div>
         </div>
