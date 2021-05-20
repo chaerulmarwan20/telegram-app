@@ -76,10 +76,10 @@ $ npm start
 
 <p align="center">
   <span>
-    <img width="400" height="400" src="./src/assets/screenshots/Login.png">   
-    <img width="400" height="400" src="./src/assets/screenshots/Chat2.png">   
-    <img width="400" height="400" src="./src/assets/screenshots/Chat3.png">   
-    <img width="400" height="400" src="./src/assets/screenshots/Chat4.png">   
+    <img width="400" src="./src/assets/screenshots/Login.png">   
+    <img width="400" src="./src/assets/screenshots/Chat2.png">   
+    <img width="400" src="./src/assets/screenshots/Chat3.png">   
+    <img width="400" src="./src/assets/screenshots/Chat4.png">   
   </span>
 </p>
 
