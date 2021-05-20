@@ -205,7 +205,7 @@ export default function Register() {
                 {formik.errors.password && formik.touched.password && (
                   <small className="error">{formik.errors.password}</small>
                 )}
-                <Button type="submit" className="btn-auth btn-block mt-4">
+                <Button type="submit" className="btn-auth btn-block mt-5">
                   {!loading ? "Register" : "Please wait..."}
                 </Button>
               </form>

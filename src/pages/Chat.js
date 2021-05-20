@@ -240,6 +240,15 @@ export default function Chat(props) {
             dispatch(findUser())
               .then((res) => {
                 const result = res;
+                if (result.username === "none") {
+                  result.username = "";
+                }
+                if (result.phoneNumber === "none") {
+                  result.phoneNumber = "";
+                }
+                if (result.bio === "none") {
+                  result.bio = "";
+                }
                 formik.setValues(result);
               })
               .catch((err) => {
@@ -376,6 +385,15 @@ export default function Chat(props) {
       .then((res) => {
         setImgUrl(`${UrlImage}${res.image}`);
         const result = res;
+        if (result.username === "none") {
+          result.username = "";
+        }
+        if (result.phoneNumber === "none") {
+          result.phoneNumber = "";
+        }
+        if (result.bio === "none") {
+          result.bio = "";
+        }
         formik.setValues(result);
       })
       .catch((err) => {

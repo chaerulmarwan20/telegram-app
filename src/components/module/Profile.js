@@ -21,11 +21,13 @@ export default function Profile(props) {
         <h1>{props.username}</h1>
         <img src={props.image} width={82} alt="User" />
         <p className="mt-3">{props.name}</p>
-        <p className="username">{props.username}</p>
+        <p className="username">
+          {props.username === "" ? "none" : props.username}
+        </p>
       </div>
       <div className="account d-flex flex-column pb-4">
         <p>Account</p>
-        <span>{props.phone}</span>
+        <span>{props.phone === "" ? "none" : props.phone}</span>
         <Link
           className="mt-1"
           to="#"
@@ -36,11 +38,11 @@ export default function Profile(props) {
         </Link>
       </div>
       <div className="info-account d-flex flex-column pb-3 mt-4">
-        <p>{props.username}</p>
+        <p>{props.username === "" ? "none" : props.username}</p>
         <span>Username</span>
       </div>
       <div className="detail d-flex flex-column mt-4">
-        <p>{props.bio}</p>
+        <p>{props.bio === "" ? "none" : props.bio}</p>
         <span>Bio</span>
         <Settings socket={props.socket}></Settings>
       </div>
