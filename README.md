@@ -11,7 +11,8 @@
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Screenshots](#screenshots)
-- [Related Project](#related-project)
+- [Link](#link)
+- [Author](#author)
 
 ## Introduction
 
@@ -47,7 +48,7 @@ The Telegram app is a chat application that allows users to send messages to oth
 
 ## Installation
 
-1. Open your terminal or command prompt. Then, clone the repo.
+1. Clone the repository.
 
 ```
 $ git clone https://github.com/chaerulmarwan20/telegram-app.git
@@ -57,10 +58,15 @@ $ git clone https://github.com/chaerulmarwan20/telegram-app.git
 
 ```
 $ cd telegram-app
+```
+
+3. Install package.
+
+```
 $ npm install
 ```
 
-3. Create environment variable.
+4. Create environment variable.
 
 ```
 $ cp .env.example .env
@@ -83,7 +89,11 @@ $ npm start
   </span>
 </p>
 
-## Related Project
+## Link
 
 - :white_check_mark: [`Backend Telegram`](https://github.com/chaerulmarwan20/telegram-app-backend)
-- :rocket: [`Production`](https://chatting-telegram.netlify.app/)
+- :rocket: [`Publication`](https://chatting-telegram.netlify.app/)
+
+## Author
+
+- [Chaerul Marwan](https://github.com/chaerulmarwan20)
