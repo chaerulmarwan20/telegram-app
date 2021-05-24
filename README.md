@@ -79,7 +79,7 @@ $ npm start
     <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291215-47b3df80-bc78-11eb-9f92-fd149617b032.png">   
     <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291212-471b4900-bc78-11eb-899a-0eff856d44ee.png">   
     <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291208-45ea1c00-bc78-11eb-9777-34ace99acc40.png">   
-    <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291204-44205880-bc78-11eb-85e0-10246f7b12b7.png">   
+    <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291415-99f50080-bc78-11eb-9e66-a03a9af26f42.png">   
   </span>
 </p>
 
