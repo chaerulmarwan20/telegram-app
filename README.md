@@ -76,10 +76,10 @@ $ npm start
 
 <p align="center">
   <span>
-    <img width="400" height="300" src="./src/assets/screenshots/Login.png">   
-    <img width="400" height="300" src="./src/assets/screenshots/Chats.png">   
-    <img width="400" height="300" src="./src/assets/screenshots/Chat3.png">   
-    <img width="400" height="300" src="./src/assets/screenshots/Chat4.png">   
+    <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291215-47b3df80-bc78-11eb-9f92-fd149617b032.png">   
+    <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291212-471b4900-bc78-11eb-899a-0eff856d44ee.png">   
+    <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291208-45ea1c00-bc78-11eb-9777-34ace99acc40.png">   
+    <img width="400" height="200" src="https://user-images.githubusercontent.com/76175402/119291204-44205880-bc78-11eb-85e0-10246f7b12b7.png">   
   </span>
 </p>
 
