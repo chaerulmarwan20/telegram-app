@@ -6,7 +6,7 @@ import Select from "../../assets/img/select.png";
 
 export default function Feature(props) {
   return (
-    <div className="d-flex justify-content-between img-container">
+    <div className="d-flex justify-content-end justify-content-md-between img-container">
       <div>
         <img
           src={Plus}
@@ -16,7 +16,7 @@ export default function Feature(props) {
           onClick={props.attach}
         />
       </div>
-      <div>
+      <div className="d-none d-md-block">
         <img
           src={Emoji}
           width={23}
@@ -25,7 +25,7 @@ export default function Feature(props) {
           onClick={props.soon}
         />
       </div>
-      <div>
+      <div className="d-none d-md-block">
         <img
           src={Select}
           width={19}

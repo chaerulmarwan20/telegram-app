@@ -672,3 +672,16 @@ section.chat .img-wrapper .file-input {
     opacity: 0.6;
   }
 }
+
+@media screen and (max-width: 767px) {
+  section.chat .right .message .attach {
+    width: 250px;
+    position: absolute;
+    box-sizing: border-box;
+    background-color: #7e98df;
+    border-radius: 35px 35px 10px 35px;
+    z-index: 1000;
+    right: 76px;
+    bottom: 70px;
+  }
+}
