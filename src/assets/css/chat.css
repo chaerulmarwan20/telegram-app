@@ -684,4 +684,12 @@ section.chat .img-wrapper .file-input {
     right: 76px;
     bottom: 70px;
   }
+
+  section.chat .right .message .input .img-container {
+    width: 25px;
+  }
+
+  section.chat .right .message .input input.form-control {
+    padding-right: 70px;
+  }
 }
