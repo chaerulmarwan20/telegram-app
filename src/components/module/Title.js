@@ -7,7 +7,7 @@ class Title extends React.Component {
       <>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Telegram App | {this.props.title}</title>
+          <title>Telegram | {this.props.title}</title>
         </Helmet>
       </>
     );
