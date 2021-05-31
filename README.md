@@ -43,7 +43,7 @@ The Telegram app is a chat application that allows users to send messages to oth
 
 ## Prerequisites
 
-- [NodeJs](https://nodejs.org/en/download/)
+- [NodeJs](https://nodejs.org/)
 - [Backend Telegram](https://github.com/chaerulmarwan20/telegram-app-backend)
 
 ## Installation
